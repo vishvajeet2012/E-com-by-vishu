@@ -14,7 +14,7 @@ app.use('/api', router);
 const connectToDatabase = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URL);
-    console.log('Database connected successfully❤️💙q ');
+    console.log('Database connected successfully❤️💙 ');
   } catch (err) {
     console.error('Database connection error:', err);
     process.exit(1);

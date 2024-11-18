@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import dogPic from "./media/petRED.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function Login() {
   const [formData, setFormData] = useState(""); // for password
   const [email, setEmail] = useState(""); 
   const [fadeClass, setFadeClass] = useState("fade-in");
+  const navigate = useNavigate();
 
   useEffect(() => {
-
     setFadeClass("fade-in-active");
   }, []);
 
@@ -38,8 +38,7 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         toast.success(data.message); 
-        // Navigate use here 
-       
+        navigate("/Product");
       } else {
         const error = await response.json();
         toast.error(error.message || "Login failed");
@@ -65,7 +64,7 @@ function Login() {
       {/* Right Side - Login Form */}
       <div className="md:w-1/2 flex items-center justify-center bg-gray-100 p-4 md:py-0">
         <form
-          className={`w-full max-w-md bg-white p-6 rounded-lg shadow-lg ${fadeClass}`}
+          className={`w-full sm:w-[400px] md:w-[500px] bg-white p-6 rounded-lg shadow-lg ${fadeClass}`}
           onSubmit={handleSubmit}
         >
           <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">

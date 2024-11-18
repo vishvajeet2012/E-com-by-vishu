@@ -52,7 +52,7 @@ exports.loginDataControler= async(req,res)=>{
       if(userCheck.password !==userPass){
         return res.status(400).json({message:"Incorrect password"})
       }
-
+ // vishu@admin.com (admin id) 123 (password)
 res.json({data:userCheck,message:"Successfully logged in"})
 
 

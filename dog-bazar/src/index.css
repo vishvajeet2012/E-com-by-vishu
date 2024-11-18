@@ -45,3 +45,9 @@ Image hover effect
   transition: transform 0.5s ease-out; 
 
 } */
+
+.adminMain {
+width:100% !important;
+margin:0px 0px 0px 0px !important;
+
+}
