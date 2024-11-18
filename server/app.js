@@ -1,21 +1,32 @@
-const { default: mongoose } = require('mongoose');
+require('dotenv').config();
 
-const app = require('express') ();
-const http =require('http').Server(app)
-     const user=   require('./model/userModel')
+const express = require('express');
+const mongoose = require('mongoose');
+const app = express();
 
+// Middleware to parse JSON requests
+app.use(express.json());  // This will parse JSON data from the client (React)
 
-mongoose.connect("mongodb+srv://vishvajeet:uXTojr4GzxugWrfR@e-com.zfi1v.mongodb.net/?retryWrites=true&w=majority&appName=E-com")
+const router = require('./routes/api');
+app.use('/api', router);
 
+// MongoDB connection
+const connectToDatabase = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URL);
+    console.log('Database connected successfully❤️💙q ');
+  } catch (err) {
+    console.error('Database connection error:', err);
+    process.exit(1);
+  }
+};
 
-    async function insert() {
-        await user.create({
-        name:'vishu',
-        email: "vishu@vishu.com"
-         }) }
-         insert()
+const startServer = async () => {
+  await connectToDatabase();
+  const port = process.env.PORT || 5000;
+  app.listen(port, () => {
+    console.log(`Server is running ╰(*°▽°*)╯`);
+  });
+};
 
-http.listen(5000 ,function(){
-    console.log("server is the running ")
-})
-    
+startServer();

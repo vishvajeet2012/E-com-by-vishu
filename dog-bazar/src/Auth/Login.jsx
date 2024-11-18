@@ -1,24 +1,53 @@
-import React, { useState } from "react";
-import dogPic from "./media/colorful-dog-painting-by-person_608068-19143.avif";
+import React, { useState, useEffect } from "react";
+import dogPic from "./media/petRED.jpg";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Login() {
-  const [formData, setFormData] = useState();
-  const [email, setEmail] = useState()
- 
+  const [formData, setFormData] = useState(""); // for password
+  const [email, setEmail] = useState(""); 
+  const [fadeClass, setFadeClass] = useState("fade-in");
 
-  function handleInputValue(e){
-    setEmail(e.target.value)
-  }
-  const handleInputChange = (e) => {
-  
-    setFormData( e.target.value)
+  useEffect(() => {
+
+    setFadeClass("fade-in-active");
+  }, []);
+
+  const handleInputValue = (e) => {
+    setEmail(e.target.value);
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(  email , formData); 
+  // Handle password input change
+  const handleInputChange = (e) => {
+    setFormData(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+    let userId = email;
+    let userPass = formData;
+    let loginData = { userId, userPass };
+
+    try {
+      const response = await fetch("api/login", {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        toast.success(data.message); 
+        // Navigate use here 
+       
+      } else {
+        const error = await response.json();
+        toast.error(error.message || "Login failed");
+      }
+    } catch (error) {
+      console.error(error); // Log error for debugging
+      toast.error("An error occurred while logging in");
+    }
   };
 
   return (
@@ -28,7 +57,7 @@ function Login() {
         <img
           src={dogPic}
           alt="Login Visual"
-          className="w-full h-full object-cover rounded-l-lg"
+          className="w-full h-full object-cover rounded-l-lg image-hover"
           loading="lazy"
         />
       </div>
@@ -36,7 +65,7 @@ function Login() {
       {/* Right Side - Login Form */}
       <div className="md:w-1/2 flex items-center justify-center bg-gray-100 p-4 md:py-0">
         <form
-          className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg"
+          className={`w-full max-w-md bg-white p-6 rounded-lg shadow-lg ${fadeClass}`}
           onSubmit={handleSubmit}
         >
           <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">
@@ -55,9 +84,9 @@ function Login() {
               type="email"
               id="email"
               value={email}
-              onChange={(e)=>handleInputValue(e)}
+              onChange={(e) => handleInputValue(e)}
               placeholder="Enter your email"
-              className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 input-transition"
             />
           </div>
 
@@ -75,26 +104,26 @@ function Login() {
               value={formData}
               onChange={handleInputChange}
               placeholder="Enter your password"
-              className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 input-transition"
             />
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-2 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 transition-all"
+            className="w-full py-2 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 transition-all button-transition"
           >
             Login
           </button>
 
           {/* Additional Links */}
           <div className="mt-4 text-center">
-            <a href="#" className="text-sm text-blue-500 hover:underline">
-              Forgot Password?
-            </a>
             <p className="text-sm text-gray-600 mt-2">
               Don't have an account?{" "}
-              <Link to="/signup" className="text-blue-500 font-medium hover:underline">
+              <Link
+                to="/signup"
+                className="text-blue-500 font-medium hover:underline"
+              >
                 Sign Up
               </Link>
             </p>
