@@ -8,6 +8,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Admin from './Dashboard/admin/Admin'
 
 import Product from './Frontend/Product/Product'
+// import DogSection from './Dashboard/admin/Product/DogSection'
+import DogsectionModel from './Dashboard/admin/Product/model/popup/DogsectionModel'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -22,6 +24,7 @@ function App() {
 <Route path='/Product' element={<Product/>}/>
 <Route path='/admin' element={<Admin/>}/>
 {/* <Route path='/adminProduct' element={<AdminProduct/>}/> */}
+<Route path='/dogsection' element={<DogsectionModel/>}/>
           </Routes>
           </BrowserRouter>
 
