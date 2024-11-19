@@ -36,7 +36,12 @@ function Login() {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json();   
+      if (data.data == "admin"){         // adminDashborad section
+        toast.success(data.message); 
+        navigate("/admin")
+      }
+          console.log(data)
         toast.success(data.message); 
         navigate("/Product");
       } else {

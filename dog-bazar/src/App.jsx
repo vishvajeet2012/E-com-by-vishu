@@ -6,7 +6,8 @@ import Login from './Auth/Login'
 import NewAccount from './Auth/NewAccount'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Admin from './Dashboard/admin/Admin'
-import AdminProduct from './Dashboard/admin/Product/AdminProduct'
+
+import Product from './Frontend/Product/Product'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,7 +19,7 @@ function App() {
 
     <Route path="/" element={<Login/>}/>
 <Route path="/signup" element={<NewAccount/>}/>
-<Route path='/Product' element={<NewAccount/>}/>
+<Route path='/Product' element={<Product/>}/>
 <Route path='/admin' element={<Admin/>}/>
 {/* <Route path='/adminProduct' element={<AdminProduct/>}/> */}
           </Routes>
