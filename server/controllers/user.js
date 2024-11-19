@@ -44,6 +44,10 @@ exports.loginDataControler= async(req,res)=>{
   try{
     const {userId, userPass}=req.body
     let userCheck =await regCollection.findOne({email:userId})
+    if(!userCheck){
+      return res.status(400).json({message:"Email not found"})
+
+    }
         // admin password check 
         if(userCheck.email==="vishu@admin.com"){
               if(userPass === "123"){
@@ -54,10 +58,7 @@ exports.loginDataControler= async(req,res)=>{
                 return res.status(400).json({ message: "Incorrect admin password" }); }
           }
 
-      if(!userCheck){
-        return res.status(400).json({message:"Email not found"})
-
-      }
+    
         /// check if userpassword
       if(userCheck.password !==userPass){
         return res.status(400).json({message:"Incorrect password"})

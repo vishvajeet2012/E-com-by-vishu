@@ -40,8 +40,9 @@ function Login() {
       if (data.data == "admin"){         // adminDashborad section
         toast.success(data.message); 
         navigate("/admin")
+        return;
       }
-          console.log(data)
+        console.log(data)         // consumer section here
         toast.success(data.message); 
         navigate("/Product");
       } else {
