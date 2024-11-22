@@ -3,13 +3,15 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-
+const fileUplaod =require('express-fileupload')
 // Middleware to parse JSON requests
 app.use(express.json());  // This will parse JSON data from the client (React)
 
 const router = require('./routes/api');
 app.use('/api', router);
-
+app.use(fileUplaod({
+  useTempFiles:true
+}))
 // MongoDB connection
 const connectToDatabase = async () => {
   try {
