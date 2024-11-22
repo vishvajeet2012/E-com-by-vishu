@@ -4,7 +4,7 @@ import DogSection from "./Product/DogSection";
 function Admin() {
   return (
     <>
-      <div className="h-screen flex justify-center">
+      <div className="h-screen flex w-screen justify-center">
         <div className="p-10 bg-[#1c1c1c] adminMain w-full max-w-screen-lg">
           {/* Header Section */}
           <div className="flex items-end justify-between mb-8">

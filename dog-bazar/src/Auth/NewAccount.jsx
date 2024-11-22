@@ -62,7 +62,7 @@ function NewAccount() {
   };
 
   return (
-    <div className="mt-20 flex flex-col md:flex-row h-[70vh] gap-4 md:gap-0 rounded-md">
+    <div className="mt-10 px-12 h-[90vh] flex flex-col md:flex-row  gap-4 md:gap-0 rounded-md">
       {/* Left Side - Image */}
       <div className="md:w-1/2 h-1/2 md:h-full rounded-xl">
         <img

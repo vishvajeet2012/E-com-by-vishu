@@ -1,323 +1,216 @@
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect } from "react";
+import toast, { ToastBar, ToastIcon } from "react-hot-toast";
 
 function PopDogie({ closeModal }) {
-    const [dogData, setDogData] = useState({
-        name: '',
-        breed: '',
-        age: '',
-        price: '',
-        description: '',
-        gender: '',
-        size: '',
-        image: null,
-        lifeExpectancy: '',
-    });
-
-    const [errors, setErrors] = useState({
-        name: '',
-        breed: '',
-        age: '',
-        price: '',
-        description: '',
-        gender: '',
-        size: '',
-        lifeExpectancy: '',
-    });
-
+    const [dogName, setDogName] = useState("");
+    const [dogBreed, setDogBreed] = useState("");
+    const [lifeExpectancy, setLifeExpectancy] = useState("");
+    const [dogSize, setDogSize] = useState("");
+    const [price, setPrice] = useState("");
+    const [description, setDescription] = useState("");
+    const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    // Close modal on escape key press
     useEffect(() => {
         const handleEscape = (e) => {
-            if (e.key === 'Escape') {
+            if (e.key === "Escape") {/// close pop functionanity
                 closeModal();
             }
         };
-        document.addEventListener('keydown', handleEscape);
-        return () => document.removeEventListener('keydown', handleEscape);
+        document.addEventListener("keydown", handleEscape);
+        return () => document.removeEventListener("keydown", handleEscape);
     }, [closeModal]);
 
-    // Handle input changes
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setDogData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
-
-    // Handle image change
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setDogData((prevState) => ({
-                ...prevState,
-                image: file,  // Save the actual file here (not URL)
-            }));
-        }
-    };
-
-    // Handle form submission
+   
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Simple validation before submitting
-        if (!isFormValid()) {
-            setErrors({
-                name: dogData.name ? '' : 'Name is required',
-                breed: dogData.breed ? '' : 'Breed is required',
-                age: dogData.age ? '' : 'Age is required',
-                price: dogData.price ? '' : 'Price is required',
-                description: dogData.description ? '' : 'Description is required',
-                gender: dogData.gender ? '' : 'Gender is required',
-                size: dogData.size ? '' : 'Size is required',
-                lifeExpectancy: dogData.lifeExpectancy ? '' : 'Life Expectancy is required',
-            });
+        if (!images || images.length === 0) {
+            ToastIcon("Please select at least one image before submitting.");
             return;
         }
 
         setLoading(true);
 
-        // Create a FormData object to send data via multipart/form-data
-        const formData = new FormData();
-        formData.append('name', dogData.name);
-        formData.append('breed', dogData.breed);
-        formData.append('age', dogData.age);
-        formData.append('price', dogData.price);
-        formData.append('description', dogData.description);
-        formData.append('gender', dogData.gender);
-        formData.append('size', dogData.size);
-        formData.append('lifeExpectancy', dogData.lifeExpectancy);
+        const uploadedImages = [];
+        for (const img of images) {
+            const formData = new FormData();
+            formData.append("file", img);
+            formData.append("upload_preset", "dogbazar");
 
-        // Append the image file if it's provided
-        if (dogData.image) {
-            formData.append('photo', dogData.image); // 'photo' is the name used on the server
-        }
+            try {
+                const response = await fetch(
+                    "https://api.cloudinary.com/v1_1/dishdojeh/image/upload",
+                    { method: "POST", body: formData }
+                );
+                const data = await response.json();
 
-        try {
-            // Send the data using fetch API
-            const response = await fetch('/api/dogProduct', {
-                method: 'POST',
-                body: formData,
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                console.log('Upload successful:', data);
-                setLoading(false);
-                closeModal();
-            } else {
-                console.error('Upload failed:', data);
-                setLoading(false);
+                if (response.ok) {
+                    uploadedImages.push(data.url);
+                } else {
+                    console.error("Image upload failed:", data);
+                    toast.error(`Failed to upload ${img.name}.`);
+                }
+            } catch (error) {
+               
+                toast.error(`An error occurred while uploading ${img.name}.`);
             }
-        } catch (error) {
-            console.error('Error during upload:', error);
-            setLoading(false);
         }
-    };
 
-    // Check if the form is valid
-    const isFormValid = () => {
-        return (
-            dogData.name &&
-            dogData.breed &&
-            dogData.age &&
-            dogData.price &&
-            dogData.description &&
-            dogData.gender &&
-            dogData.size &&
-            dogData.lifeExpectancy
-        );
-    };
+        if (uploadedImages.length > 0) {
+            const productDetails = {
+                dogName,
+                dogBreed,
+                lifeExpectancy,
+                dogSize,
+                price,
+                description,
+                images: uploadedImages, 
+            };
 
-    // Reset form fields
-    const handleClear = () => {
-        setDogData({
-            name: '',
-            breed: '',
-            age: '',
-            price: '',
-            description: '',
-            gender: '',
-            size: '',
-            image: null,
-            lifeExpectancy: '',
-        });
-    };
+            try {
+                const response = await fetch("/api/dogProduct", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(productDetails),
+                });
 
-    // Image preview
-    const imagePreview = dogData.image ? URL.createObjectURL(dogData.image) : null;
+                const result = await response.json();
+
+                if (response.ok) {
+                    toast.error("Dog product added successfully!");
+                    closeModal();
+                } else {
+                    toast.error(result.message || "Failed to add product.");
+                }
+            } catch (error) {
+                console.error("Error saving product:", error);
+                alert("An error occurred while saving the product.");
+            }
+        } else {
+            alert("No images were uploaded. Please try again.");
+        }
+
+        setLoading(false);
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-gray-800 p-6 sm:p-8 rounded-lg w-full max-w-lg sm:max-w-2xl">
-                <h1 className="text-white text-2xl font-semibold mb-6 text-center">Upload Dog Data</h1>
-                
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 lg:space-y-8">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:grid-cols-3">
-                        {/* Dog Name */}
-                        <div className="flex flex-col">
-                            <label htmlFor="name" className="text-white text-sm mb-2">Dog Name</label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={dogData.name}
-                                onChange={handleChange}
-                                className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter dog name"
-                                required
-                            />
-                            {errors.name && <span className="text-red-500 text-sm">{errors.name}</span>}
-                        </div>
+                <h1 className="text-white text-2xl font-semibold mb-6 text-center">
+                    Add Dog Product
+                </h1>
 
-                        {/* Breed */}
-                        <div className="flex flex-col">
-                            <label htmlFor="breed" className="text-white text-sm mb-2">Breed</label>
-                            <input
-                                type="text"
-                                id="breed"
-                                name="breed"
-                                value={dogData.breed}
-                                onChange={handleChange}
-                                className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter breed"
-                                required
-                            />
-                            {errors.breed && <span className="text-red-500 text-sm">{errors.breed}</span>}
-                        </div>
-
-                        {/* Age */}
-                        <div className="flex flex-col">
-                            <label htmlFor="age" className="text-white text-sm mb-2">Age</label>
-                            <input
-                                type="number"
-                                id="age"
-                                name="age"
-                                value={dogData.age}
-                                onChange={handleChange}
-                                className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter age"
-                                required
-                            />
-                            {errors.age && <span className="text-red-500 text-sm">{errors.age}</span>}
-                        </div>
-
-                        {/* Price */}
-                        <div className="flex flex-col">
-                            <label htmlFor="price" className="text-white text-sm mb-2">Price</label>
-                            <input
-                                type="number"
-                                id="price"
-                                name="price"
-                                value={dogData.price}
-                                onChange={handleChange}
-                                className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter price"
-                                required
-                            />
-                            {errors.price && <span className="text-red-500 text-sm">{errors.price}</span>}
-                        </div>
-
-                        {/* Description */}
-                        <div className="flex flex-col col-span-2 sm:col-span-1">
-                            <label htmlFor="description" className="text-white text-sm mb-2">Description</label>
-                            <textarea
-                                id="description"
-                                name="description"
-                                value={dogData.description}
-                                onChange={handleChange}
-                                className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter dog description"
-                                rows="4"
-                                required
-                            />
-                            {errors.description && <span className="text-red-500 text-sm">{errors.description}</span>}
-                        </div>
-
-                        {/* Gender */}
-                        <div className="flex flex-col">
-                            <label htmlFor="gender" className="text-white text-sm mb-2">Gender</label>
-                            <select
-                                id="gender"
-                                name="gender"
-                                value={dogData.gender}
-                                onChange={handleChange}
-                                className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            >
-                                <option value="">Select gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                            {errors.gender && <span className="text-red-500 text-sm">{errors.gender}</span>}
-                        </div>
-
-                        {/* Size */}
-                        <div className="flex flex-col">
-                            <label htmlFor="size" className="text-white text-sm mb-2">Size</label>
-                            <input
-                                type="text"
-                                id="size"
-                                name="size"
-                                value={dogData.size}
-                                onChange={handleChange}
-                                className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter size"
-                                required
-                            />
-                            {errors.size && <span className="text-red-500 text-sm">{errors.size}</span>}
-                        </div>
-
-                        {/* Life Expectancy */}
-                        <div className="flex flex-col">
-                            <label htmlFor="lifeExpectancy" className="text-white text-sm mb-2">Life Expectancy</label>
-                            <input
-                                type="text"
-                                id="lifeExpectancy"
-                                name="lifeExpectancy"
-                                value={dogData.lifeExpectancy}
-                                onChange={handleChange}
-                                className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Enter life expectancy"
-                                required
-                            />
-                            {errors.lifeExpectancy && <span className="text-red-500 text-sm">{errors.lifeExpectancy}</span>}
-                        </div>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="flex flex-col">
+                        <label htmlFor="dogName" className="text-white text-sm mb-2">
+                            Dog Name
+                        </label>
+                        <input
+                            type="text"
+                            id="dogName"
+                            value={dogName}
+                            onChange={(e) => setDogName(e.target.value)}
+                            className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        />
                     </div>
 
-                    {/* Image */}
                     <div className="flex flex-col">
-                        <label htmlFor="image" className="text-white text-sm mb-2">Dog Image</label>
+                        <label htmlFor="dogBreed" className="text-white text-sm mb-2">
+                            Dog Breed
+                        </label>
+                        <input
+                            type="text"
+                            id="dogBreed"
+                            value={dogBreed}
+                            onChange={(e) => setDogBreed(e.target.value)}
+                            className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="lifeExpectancy" className="text-white text-sm mb-2">
+                            Life Expectancy (years)
+                        </label>
+                        <input
+                            type="number"
+                            id="lifeExpectancy"
+                            value={lifeExpectancy}
+                            onChange={(e) => setLifeExpectancy(e.target.value)}
+                            className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="dogSize" className="text-white text-sm mb-2">
+                            Dog Size
+                        </label>
+                        <select
+                            id="dogSize"
+                            value={dogSize}
+                            onChange={(e) => setDogSize(e.target.value)}
+                            className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        >
+                            <option value="">Select Size</option>
+                            <option value="small">Small</option>
+                            <option value="medium">Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="price" className="text-white text-sm mb-2">
+                            Price ($)
+                        </label>
+                        <input
+                            type="number"
+                            id="price"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                            className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="description" className="text-white text-sm mb-2">
+                            Description
+                        </label>
+                        <textarea
+                            id="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label htmlFor="images" className="text-white text-sm mb-2">
+                            Select Images (You can upload multiple)
+                        </label>
                         <input
                             type="file"
-                            id="image"
-                            name="image"
-                            onChange={handleImageChange}
+                            id="images"
+                            onChange={(e) => setImages([...e.target.files])}
                             className="bg-gray-700 text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             accept="image/*"
+                            multiple
+                            required
                         />
-                        {imagePreview && (
-                            <img src={imagePreview} alt="Preview" className="mt-2 max-h-48 object-cover rounded-md" />
-                        )}
                     </div>
 
-                    {/* Submit & Clear buttons */}
-                    <div className="flex justify-between">
-                        <button
-                            type="button"
-                            onClick={handleClear}
-                            className="text-red-500"
-                        >
-                            Clear
-                        </button>
+                    <div className="flex justify-center">
                         <button
                             type="submit"
                             disabled={loading}
-                            className="bg-blue-500 text-white p-3 rounded-md disabled:bg-blue-300"
+                            className="bg-blue-500 text-white px-6 py-3 rounded-md disabled:bg-blue-300"
                         >
-                            {loading ? 'Submitting...' : 'Submit'}
+                            {loading ? "Uploading..." : "Submit"}
                         </button>
                     </div>
                 </form>

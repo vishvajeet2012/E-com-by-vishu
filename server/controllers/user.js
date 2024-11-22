@@ -3,12 +3,12 @@ const regCollection = require('../model/userModel');
 // User Registration controler
 exports.RegestrationUserData = async (req, res) => {
   try {
-    console.log("Request Body:", req.body);  // Log the request body
+   
 
-    // Destructure the body data from the request
-    const { fullName, email, password } = req.body;
+    // Destructure the body data 
+        const { fullName, email, password } = req.body;
 
-    // Validate input data (optional)
+    // Validate input data 
     if (!fullName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }

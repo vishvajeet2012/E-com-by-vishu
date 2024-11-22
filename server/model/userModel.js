@@ -10,13 +10,13 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // Enforce unique email addresses
+    unique: true, 
   },
   password: {
     type: String,
     required: true,
   },
-}, { timestamps: true }); // Timestamps for createdAt/updatedAt fields
+}, { timestamps: true }); 
 
 // Create the model based on the schema
 const regCollection = model('User', userSchema);
