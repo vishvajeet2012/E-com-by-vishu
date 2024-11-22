@@ -29,6 +29,10 @@ router.post('/regData', userController.RegestrationUserData);
 
 
 
+ ///////////////Frontend SECTION/////////////////////
+ router.get('/dogfetchProduct',ProductController.dogFetchProductControler)
+
+
 
 
 

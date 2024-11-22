@@ -41,3 +41,12 @@ exports.dogProductController = async (req, res) => {
     });
   }
 };
+
+
+
+exports.dogFetchProductControler =async (req,res)=>{
+  const record=await DogCollection.find()
+  res.json({data:record})
+}
+
+
