@@ -11,12 +11,12 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true, 
-  },
+  }, 
   password: {
     type: String,
     required: true,
   },
-}, { timestamps: true }); 
+}, { timestamps: true }) 
 
 // Create the model based on the schema
 const regCollection = model('User', userSchema);

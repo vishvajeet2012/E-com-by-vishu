@@ -3,7 +3,7 @@ import dogPic from "./media/petRED.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-function Login() {
+function Login({handelLogin}) {
   const [formData, setFormData] = useState(""); // for password
   const [email, setEmail] = useState(""); 
   const [fadeClass, setFadeClass] = useState("fade-in");
@@ -37,14 +37,19 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();   
-      if (data.data == "admin"){         // adminDashborad section
+      if (data.data == "admin"){   
+        // adminDashborad section
+        handelLogin(data)
         toast.success(data.message); 
         navigate("/admin")
         return;
       }
-        console.log(data)         // consumer section here
-        toast.success(data.message); 
-        navigate("/Product");
+        console.log(data)  
+        // consumer section here
+        handelLogin(data)
+       toast.success(data.message); 
+      navigate("/Product");
+
       } else {
         const error = await response.json();
         toast.error(error.message || "Login failed");

@@ -7,11 +7,11 @@ const app = express();
 
 // Middleware to parse JSON and form-urlencoded data
 app.use(express.json()); // Parse JSON data
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded form data
+app.use(express.urlencoded({ extended: true })); 
 
-// Middleware to handle file uploads
+// Middleware to handle file uploads 
 app.use(fileUpload({
-  useTempFiles: true, // Enable temporary file storage for uploads
+  useTempFiles: true, 
 }));
 
 // Router

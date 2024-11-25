@@ -24,6 +24,7 @@ function DogsectionModel() {
       
 
     {showModel && <PopDogie   closeModal={closeModal}/>}
+
     </>
   );
 }

@@ -19,24 +19,36 @@ function Product() {
   }, []);
 
   return (
-    <div className="bg-black min-h-screen p-6">
-      {/* Grid Layout */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+    <div className="bg-white min-h-screen p-6">
+      {/* Flex Layout */}
+      <div className="flex flex-wrap gap-3 p-8 px-10 justify-start">
         {dogProducts.map((product, index) => (
-          <div
-            key={index}
-            className="max-w-xs mx-auto p-4 bg-white rounded-md shadow hover:shadow-lg transition duration-200"
-          >
+          <div key={index}
+            className="max-w-xs  p-4 bg-white rounded-md shadow hover:shadow-lg transition duration-300">
+           <div style={{objectFit:"contain",aspectRatio:"3/2"}} className="w-full h-72 ">
             <img
               src={product.images[0] || "https://via.placeholder.com/150"}
               alt={product.dogName || "Dog Image"}
-              className="w-full h-32 object-cover rounded-md mb-3"
+              className="w-full h-full  rounded-md mb-3"
             />
+            </div>
             <h2 className="text-lg font-semibold text-gray-800 truncate">
               {product.dogName}
             </h2>
             <p className="text-sm text-gray-500 truncate">
-              Life Expectancy: {product.lifeExpectancy}
+              Breed: {product.dogBreed || "Unknown"}
+            </p>
+            <p className="text-sm text-gray-500 truncate">
+              Life Expectancy: {product.lifeExpectancy || "N/A"} years
+            </p>
+            <p className="text-sm text-gray-500 truncate">
+              Size: {product.dogSize || "Unknown"}
+            </p>
+            <p className="text-sm text-gray-500 truncate">
+              Pet Type: {product.petType || "Unknown"}
+            </p>
+            <p className="text-sm text-gray-500 truncate">
+              Pet Age: {product.age !== undefined ? `${product.age} years` : "Unknown"}
             </p>
             <p className="text-sm text-gray-600 mb-3 truncate">
               {product.description || "No description available."}

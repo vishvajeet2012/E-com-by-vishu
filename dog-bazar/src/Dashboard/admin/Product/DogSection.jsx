@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import Listproduct from "./Listproduct"
 
 function DogSection(){
     return (
@@ -13,6 +14,7 @@ function DogSection(){
         </button></Link>
       </div>
     </div> 
+    <Listproduct/>
         </> 
     )
 }

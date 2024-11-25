@@ -12,15 +12,36 @@ cloudinary.config({
 
 // Controller to handle dog product creation
 exports.dogProductController = async (req, res) => {
+  console.log(req.body)
   try {
-    const { dogName, dogBreed, lifeExpectancy, dogSize, price, description, images } = req.body;
+    const { 
+      dogName, 
+      dogBreed, 
+      lifeExpectancy, 
+      dogSize, 
+      price, 
+      description, 
+      images, 
+      petType, 
+      age   
+    } = req.body;
 
     // Validation (optional hai )
-    if (!dogName || !dogBreed || !lifeExpectancy || !dogSize || !price || !description || !images) {
+    if (
+      !dogName || 
+      !dogBreed || 
+      !lifeExpectancy || 
+      !dogSize || 
+      !price || 
+      !description || 
+      !images || 
+      !petType || 
+      !age   
+    ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Add new dog in data base
+    // Add new pet in data base
     const record = new DogCollection({
       dogName,
       dogBreed,
@@ -29,18 +50,24 @@ exports.dogProductController = async (req, res) => {
       price,
       description,
       images,
+      petType, // Save petType
+      age   // Save petAge
     });
 
     await record.save();
 
     return res.status(200).json({
-      message: "Dog product successfully added to the database",
+      message: "Pet product successfully added to the database",
     });
   } catch (error) {
-    return res.status(500).json({message: "Server error, please try again",error: error.message,
+    console.error("Error adding pet product:", error); // Log for debugging purposes
+
+    return res.status(500).json({message: "Server error, please try again",
+      error: error.message || "Something went wrong on the server",
     });
   }
 };
+
 
 
 
