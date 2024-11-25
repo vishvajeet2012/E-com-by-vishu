@@ -26,6 +26,7 @@ router.post('/regData', userController.RegestrationUserData);
 
  ///////////////PRODUCT SECTION///////////////////
  router.post('/dogProduct',ProductController.dogProductController)
+router.delete('/deleteProduct/:id', ProductController.dogDeleteProduct)
 
 
 

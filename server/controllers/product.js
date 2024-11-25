@@ -68,12 +68,23 @@ exports.dogProductController = async (req, res) => {
   }
 };
 
-
-
-
 exports.dogFetchProductControler =async (req,res)=>{
   const record=await DogCollection.find()
   res.json({data:record})
+
 }
 
-
+exports.dogDeleteProduct = async(req,res)=>{
+  const id = req.params.id;
+console.log(id)
+  
+  try {
+      const result = await DogCollection.findByIdAndDelete(id);
+      if (!result) {
+          return res.status(404).json({ message: "Product not found" });
+      }
+      res.json({ message: "Successfully deleted product" });
+  } catch (error) {
+      res.status(500).json({ message: "Error deleting product" });
+  }
+};

@@ -18,7 +18,7 @@ app.use(fileUpload({
 const router = require('./routes/api');
 app.use('/api', router);
 
-// MongoDB connection
+
 const connectToDatabase = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true });

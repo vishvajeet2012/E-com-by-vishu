@@ -26,7 +26,7 @@ function Listproduct() {
 
   // Delete product from the database
   const deleteProduct = async (productId) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
+  
 
     try {
       const res = await fetch(`/api/deleteProduct/${productId}`, {
