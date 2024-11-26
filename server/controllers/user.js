@@ -1,32 +1,45 @@
 const regCollection = require('../model/userModel');
+const { jwtAuthMiddleware, generateToken } = require('../Auth/jwt');
 
-// User Registration controler
+// User Registration Controller
 exports.RegestrationUserData = async (req, res) => {
   try {
+    const { fullName, email, password } = req.body;
+
    
-
-    // Destructure the body data 
-        const { fullName, email, password } = req.body;
-
-    // Validate input data 
     if (!fullName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Create a new user record in the database
+    // if email kis alraedy regester send error
+    const existingUser = await regCollection.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email is already registered" });
+    }
+
+    // save data in data  base 
     const record = new regCollection({
       fullName,
       email,
-      password,
+      password, 
     });
 
-    // Save the new user record to the database
-    await record.save();
+    const response = await record.save();
 
-    // Respond back to the client with a success message
-    return res.status(200).json({
+    // jwt token payload token
+    const payload = {
+      id: response.id,
+      email: response.email,
+    };
+
+    // Genrate jwt token
+    const token = generateToken(payload);
+
+  
+    return res.status(201).json({
+      token: token,
       message: "User registered successfully",
-      userData: { fullName, email },  
+      userData: { fullName, email },
     });
   } catch (error) {
     console.error("Error during registration:", error);
@@ -37,29 +50,28 @@ exports.RegestrationUserData = async (req, res) => {
   }
 };
 
-
+ 
 //// userLogin controller
 exports.loginDataControler= async(req,res)=>{
  
   try{
     const {userId, userPass}=req.body
     let userCheck =await regCollection.findOne({email:userId})
+    let passCheck = await regCollection.findOne({password:userPass})  /// passcheck use for only admin password checking 
     if(!userCheck){
-      return res.status(400).json({message:"Email not found"})
 
+      return res.status(400).json({message:"Email not found"})
     }
         // admin password check 
         if(userCheck.email==="vishu@admin.com"){
-              if(userPass === "123"){
+              if(passCheck.password === "123"){
                       console.log("this is admin 😘")
                 return res.json({LoginUser:"Admin" , data: "admin", message: "Admin successfully logged in" });
               }else {
                 //  if admin password is worng
                 return res.status(400).json({  message: "Incorrect admin password" }); }
           }
-
-    
-        /// check if userpassword
+        /// checkn user passwrod 
       if(userCheck.password !==userPass){
         return res.status(400).json({message:"Incorrect password"})
       }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 function Product() {
   const [dogProducts, setDogProducts] = useState([]);
@@ -62,9 +63,11 @@ function Product() {
                     }).format(product.price)
                   : "Price on request"}
               </p>
-              <button className="text-xs py-1 px-3 bg-green-500 text-white rounded hover:bg-green-600 transition">
-                Adopt
-              </button>
+            <Link to={`/Pethub/${product._id}`}>
+  <button className="text-xs py-1 px-3 bg-green-500 text-white rounded hover:bg-green-600 transition">
+    Adopt
+  </button>
+</Link>
             </div>
           </div>
         ))}

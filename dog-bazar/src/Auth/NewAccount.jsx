@@ -156,8 +156,7 @@ function NewAccount() {
           </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
+          <button type="submit"
             className="w-full py-2 bg-blue-500 text-white rounded-md border font-medium hover:bg-blue-600 transition-all"
           >
             Sign Up

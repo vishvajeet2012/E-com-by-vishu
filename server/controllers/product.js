@@ -74,6 +74,7 @@ exports.dogFetchProductControler =async (req,res)=>{
 
 }
 
+////DELET pET code here 
 exports.dogDeleteProduct = async(req,res)=>{
   const id = req.params.id;
 console.log(id)
@@ -88,3 +89,18 @@ console.log(id)
       res.status(500).json({ message: "Error deleting product" });
   }
 };
+///singleProduct Show Case
+exports.SingleProductGet= async (req,res) =>{
+  const id = req.params.id;
+  console.log(id)
+      try{
+        const result = await DogCollection.findById(id)
+        if(!result){
+          return res.status(404).Json({message:"Server Error "})
+        }
+         res.json({data:result})
+      }catch(error){
+        res.status(500).json({message:"Error Server Crash"})
+      }
+
+}

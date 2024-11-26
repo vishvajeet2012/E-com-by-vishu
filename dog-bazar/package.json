@@ -1,7 +1,7 @@
 {
   "name": "dog-bazar",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.2.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -32,5 +32,12 @@
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",
     "vite": "^5.4.10"
-  }
+  },
+  "description": "house of pet ",
+  "main": "eslint.config.js",
+  "keywords": [
+    "dog-bazar"
+  ],
+  "author": "vishvajeet shukla",
+  "license": "ISC"
 }
