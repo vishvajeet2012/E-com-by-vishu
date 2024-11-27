@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import UpdatePetDetails from "./model/popup/UpdatePetDetails";
+
 
 function Listproduct() {
   const [products, setProducts] = useState([]);
+  const [showUpdateProducts , setShowUpdateProduct] = useState(false);
+const [id , setId] =useState(null)
+   
+  const showUpdateProduct =()=> setShowUpdateProduct(false)
 
   // Fetch products from the backend
   useEffect(() => {
@@ -22,7 +28,7 @@ function Listproduct() {
     };
 
     fetchProducts();
-  }, []);
+  }, );
 
   // Delete product from the database
   const deleteProduct = async (productId) => {
@@ -38,6 +44,7 @@ function Listproduct() {
       if (res.ok) {
         toast.success("Product deleted successfully");
         setProducts(products.filter((product) => product._id !== productId));
+        setId(productId)
       } else {
         toast.error(result.message || "Failed to delete product");
       }
@@ -47,8 +54,9 @@ function Listproduct() {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-[#1c1c1c] p-6">
-      <h1 className="text-2xl font-bold text-white mb-4">Product List</h1>
+      <h1 className="text-2xl font-bold text-center text-white mb-4">Product List</h1>
       <div className="overflow-auto bg-[#1c1c1c] shadow rounded-lg p-4">
         <table className="table-auto w-full">
           <thead>
@@ -57,7 +65,9 @@ function Listproduct() {
               <th className="p-3 text-white">Dog Name</th>
               <th className="p-3 text-white">Breed</th>
               <th className="p-3 text-white">Price</th>
-              <th className="p-3 text-white">Actions</th>
+
+              <th className="p-3 text-white">Delete</th>
+              <th className="p-3 text-white">Update</th>
             </tr>
           </thead>
           <tbody>
@@ -81,14 +91,25 @@ function Listproduct() {
                         }).format(product.price)
                       : "N/A"}
                   </td>
-                  <td className="p-3">
+                  <td className="p-3 ">
+                  
                     <button
                       onClick={() => deleteProduct(product._id)}
                       className="py-1 px-3 bg-red-500 text-white rounded hover:bg-red-600 transition"
                     >
                       Delete
                     </button>
+
                   </td>
+                  <td className="p-3 ">
+                  <button
+                     onClick={() => setShowUpdateProduct(true)}
+                      className="py-1 px-3  bg-purple-700 text-cyan-100  rounded hover:bg-red-600 transition"
+                    >
+                  Update Product
+
+                    </button>
+                    </td>
                 </tr>
               ))
             ) : (
@@ -102,6 +123,9 @@ function Listproduct() {
         </table>
       </div>
     </div>
+  
+    {showUpdateProducts && <UpdatePetDetails id={id}  showUpdateProduct={showUpdateProduct} />}
+    </>
   );
 }
 

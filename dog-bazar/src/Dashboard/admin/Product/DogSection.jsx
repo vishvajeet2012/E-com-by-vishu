@@ -13,8 +13,12 @@ function DogSection(){
      DogSection
         </button></Link>
       </div>
+
+
+
+      
     </div> 
-    <Listproduct/>
+   
         </> 
     )
 }

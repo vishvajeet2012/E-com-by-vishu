@@ -51,3 +51,27 @@ width:100% !important;
 margin:0px 0px 0px 0px !important;
 
 } */
+
+
+body::-webkit-scrollbar {
+  width: 5px; /* Width of the scrollbar */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #FF9B00; /* Apply the orange color */
+  border-radius: 20px; /* Round edges */
+  background-image: -webkit-linear-gradient(
+    90deg,
+    rgba(255, 155, 0, 0.5) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 155, 0, 0.5) 50%,
+    rgba(255, 155, 0, 0.5) 75%,
+    transparent 75%,
+    transparent
+  );
+}
+
+body::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Light gray for the track */
+}

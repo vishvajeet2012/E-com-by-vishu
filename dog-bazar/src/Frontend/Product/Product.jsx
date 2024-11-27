@@ -20,9 +20,9 @@ function Product() {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen p-6">
+    <div className="bg-white min-h-screen p-2">
       {/* Flex Layout */}
-      <div className="flex flex-wrap gap-3 p-8 px-10 justify-start">
+      <div className="flex flex-wrap gap-3 p-5 px-5 justify-start">
         {dogProducts.map((product, index) => (
           <div key={index}
             className="max-w-xs  p-4 bg-white rounded-md shadow hover:shadow-lg transition duration-300">

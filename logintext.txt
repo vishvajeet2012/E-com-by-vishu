@@ -1,0 +1,35 @@
+
+  try{
+    const {userId, userPass}=req.body
+    let userCheck =await regCollection.findOne({email:userId})
+    let passCheck = await regCollection.findOne({password:userPass})  /// passcheck use for only admin password checking 
+    if(!userCheck){
+
+      return res.status(400).json({message:"Email not found"})
+    }
+    
+
+
+      // admin password check 
+        if(userCheck.email==="vishu@admin.com"){
+              if(passCheck.password === "123"){
+                      console.log("this is admin 😘")
+                return res.json({LoginUser:"Admin" , data: "admin", message: "Admin successfully logged in"});
+              }else {
+                //  if admin password is worng
+                return res.status(400).json({  message: "Incorrect admin password" }); }
+          }
+        /// checkn user passwr
+      if(userCheck.password !==userPass){
+        return res.status(400).json({message:"Incorrect password"})
+      }
+res.json({ LoginUser: "Consumer" , data:userCheck,message:"Successfully logged in"})
+
+
+  }catch(error){
+        res.status(500).json({message:"Login failed. Please try again later"})
+  }
+
+
+
+}

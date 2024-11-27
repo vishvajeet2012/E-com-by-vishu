@@ -39,7 +39,7 @@ function SingleProduct() {
         {/* Product Image */}
         <div className="flex-shrink-0 lg:w-1/3 w-full flex justify-center items-center">
           <img
-            src={product.images || "https://via.placeholder.com/300"}
+            src={product.images[0] || product.images[2]}
             alt={product.dogName|| "Product Image"}
             className="w-full h-full object-contain max-h-96 rounded-md"
           />

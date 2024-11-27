@@ -1,43 +1,28 @@
 const regCollection = require('../model/userModel');
-const { jwtAuthMiddleware, generateToken } = require('../Auth/jwt');
+ 
+const jwt = require("jsonwebtoken");
 
-// User Registration Controller
 exports.RegestrationUserData = async (req, res) => {
+ 
   try {
-    const { fullName, email, password } = req.body;
-
    
+    const { fullName, email, password } = req.body;
     if (!fullName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // if email kis alraedy regester send error
+    // Check if email is already registered
     const existingUser = await regCollection.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email is already registered" });
     }
 
-    // save data in data  base 
-    const record = new regCollection({
-      fullName,
-      email,
-      password, 
-    });
+    // Save data in the database
+    const record = new regCollection({ fullName, email, password });
 
-    const response = await record.save();
+    await record.save();
 
-    // jwt token payload token
-    const payload = {
-      id: response.id,
-      email: response.email,
-    };
-
-    // Genrate jwt token
-    const token = generateToken(payload);
-
-  
     return res.status(201).json({
-      token: token,
       message: "User registered successfully",
       userData: { fullName, email },
     });
@@ -49,11 +34,17 @@ exports.RegestrationUserData = async (req, res) => {
     });
   }
 };
-
  
 //// userLogin controller
-exports.loginDataControler= async(req,res)=>{
- 
+// exports.loginDataControler= async(req,res)=>{
+//   const {userId, userPass}=req.body
+//   /// await regCollection.findOne({email:userId})
+// ///await regCollection.findOne({password:userPass})
+
+
+
+
+exports.loginDataControler = async (req, res) => {
   try{
     const {userId, userPass}=req.body
     let userCheck =await regCollection.findOne({email:userId})
