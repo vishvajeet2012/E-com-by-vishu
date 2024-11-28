@@ -104,10 +104,7 @@ exports.SingleProductGet= async (req,res) =>{
       }
 }
 exports.GetpetdataControler= async(req,res) =>{  ////get pet data in updatepetdata compo 
-  const id  = req.params.id  
-console.log(id)
-    // const result = await DogCollection.findById(id)
-    // res.json({data:result})
+  const id  = req.params.id; 
     try{
       const result =   await DogCollection.findById(id)
           if(!result)
