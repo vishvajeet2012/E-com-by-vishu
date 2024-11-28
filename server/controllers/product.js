@@ -120,13 +120,22 @@ exports.GetpetdataControler= async(req,res) =>{  ////get pet data in updatepetda
 
 exports.UpdatePetDetails= async(req,res)=>{
   const id = req.params.id
-      try{
-        const result =await DogCollection.find(id)
-        if(!result){
-          return res.status(404).json({message:"Server error"})
-        }
-        res.json({data:result})
-      }catch(error){
+  console.log(req.body)
+  try{
+    const { dogName , dogBreed,lifeExpectancy,dogSize ,price, description,petType, age} = req.body
+      const record = await DogCollection.findByIdAndUpdate(id, {
+        dogName:dogName,
+        dogBreed :dogBreed,
+        lifeExpectancy : lifeExpectancy,
+        dogSize :dogSize,
+        price:price,
+        description:description,
+        petType:petType, 
+        age:age 
+      })
+      res.json({message:"Successfully Update data.."})
+  
+  }catch(error){
 
-      res.status(500).json({message:"Try again"})}
+  }
 }

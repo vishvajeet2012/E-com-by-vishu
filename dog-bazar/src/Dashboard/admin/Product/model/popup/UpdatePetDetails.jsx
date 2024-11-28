@@ -45,32 +45,30 @@ const UpdatePetDetails = ({ id, showUpdateProduct }) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
-const handleSubmit = ()=>{
-    
-}
-//   // Handle form submission
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
 
-//     try {
-//       const res = await fetch(`/api/dogupdateProduct/${id}`, {
-//         method: "PUT",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(formData),
-//       });
+ // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-//       const result = await res.json();
+    try {
+      const res = await fetch(`/api/dogupdateProduct/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-//       if (res.ok) {
-//         toast.success("Product updated successfully");
-//         showUpdateProduct(); // Close modal
-//       } else {
-//         toast.error(result.message || "Failed to update product");
-//       }
-//     } catch (error) {
-//       toast.error("Error updating product");
-//     }
-//   };
+      const result = await res.json();
+
+      if (res.ok) {
+        toast.success("Product updated successfully");
+        showUpdateProduct(); // Close modal
+      } else {
+        toast.error(result.message || "Failed to update product");
+      }
+    } catch (error) {
+      toast.error("Error updating product");
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
