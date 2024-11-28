@@ -102,5 +102,34 @@ exports.SingleProductGet= async (req,res) =>{
       }catch(error){
         res.status(500).json({message:"Error Server Crash"})
       }
+}
+exports.GetpetdataControler= async(req,res) =>{  ////get pet data in updatepetdata compo 
+  const id  = req.params.id  
+console.log(id)
+    // const result = await DogCollection.findById(id)
+    // res.json({data:result})
+    try{
+      const result =   await DogCollection.findById(id)
+          if(!result)
+          {
+           return res.status(400).json({message:"Server Error "})
+          }
+      res.json({data:result})
+    }catch(error){
+          res.status(500).json({message:"error server Crash"})
+    }
+}
 
+
+exports.UpdatePetDetails= async(req,res)=>{
+  const id = req.params.id
+      try{
+        const result =await DogCollection.find(id)
+        if(!result){
+          return res.status(404).json({message:"Server error"})
+        }
+        res.json({data:result})
+      }catch(error){
+
+      res.status(500).json({message:"Try again"})}
 }

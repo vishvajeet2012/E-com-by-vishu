@@ -28,7 +28,8 @@ router.post('/regData', userController.RegestrationUserData);
  router.post('/dogProduct',ProductController.dogProductController)
 router.delete('/deleteProduct/:id', ProductController.dogDeleteProduct)
 router.get('/singlePet/:id' ,ProductController.SingleProductGet)
-
+router.get('/getpetdata/:id' , ProductController.GetpetdataControler)
+router.put('/updatePetDetails/:id',ProductController.UpdatePetDetails)
 
 
  ///////////////Frontend SECTION/////////////////////
