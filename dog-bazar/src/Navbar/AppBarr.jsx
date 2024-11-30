@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Logo from "../Frontend/media/home/logo.png";
+import { Link } from "react-router-dom";
 
 const AppBarr = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,7 +38,7 @@ const AppBarr = () => {
           } md:bg-transparent md:flex-row p-4 md:p-0 shadow-lg md:shadow-none mx-auto`}
         >
           <li className="hover:text-gray-300 cursor-pointer">Home</li>
-          <li className="hover:text-gray-300 cursor-pointer">About</li>
+       <Link to="/dogadopt">   <li className="hover:text-gray-300 cursor-pointer">Adopt</li> </Link>
           <li className="hover:text-gray-300 cursor-pointer">Services</li>
           <li className="hover:text-gray-300 cursor-pointer">Contact</li>
         </ul>

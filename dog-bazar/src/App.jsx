@@ -13,6 +13,8 @@ import MainFronted from './Frontend/MainFronted'
 import PetProduct from './Dashboard/admin/Adpot/petProduct/PetProduct'
 import AppBarr from './Navbar/AppBarr'
 import SingleProduct from './Frontend/Product/SingleProduct'
+import DogAdopt from './Dashboard/admin/Adpot/DogAdpopt'
+import AddPets from './Dashboard/admin/Adpot/addAdpotpet/Addpets'
 
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
 <Route path='/dogsection' element={<DogsectionModel/>}/>
 <Route path="/petProduct" element={<PetProduct/>}/>
 <Route path="/Pethub/:id" element={<SingleProduct/>} />
+<Route path='/dogadopt' element={<DogAdopt/>}/>
+<Route path='/add-pet'  element={<AddPets/>}/>
           </Routes>
           </BrowserRouter>
 

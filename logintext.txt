@@ -32,4 +32,4 @@ res.json({ LoginUser: "Consumer" , data:userCheck,message:"Successfully logged i
 
 
 
-}
+} 

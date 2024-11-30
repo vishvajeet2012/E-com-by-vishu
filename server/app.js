@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 const app = express();
+const mapRoute = require('./routes/maps.route')
 
 // Middleware to parse JSON and form-urlencoded data
 app.use(express.json()); // Parse JSON data
@@ -17,7 +18,7 @@ app.use(fileUpload({
 // Router
 const router = require('./routes/api');
 app.use('/api', router);
-
+app.use('/maps' ,mapRoute)
 
 const connectToDatabase = async () => {
   try {
@@ -38,4 +39,7 @@ const startServer = async () => {
   });
 };
 
+
+
 startServer()
+
