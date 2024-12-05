@@ -17,6 +17,11 @@ router.post('/regData', userController.RegestrationUserData);
 
  // handel handle data 
  router.post('/login', userController.loginDataControler)
+ //handel userInfro compo 
+ router.get('/userInfo/:id', userController.userInfroGetData)
+ router.put('/userPasswordChange/:id', userController.userPasswordChange)
+ router.put('/userkapata/:id', userController.userAddress)
+router.put('/userji/:id',userController.userjiController)
 
 
  
@@ -32,9 +37,16 @@ router.get('/getpetdata/:id' , ProductController.GetpetdataControler)
 router.put('/dogupdateProduct/:id',ProductController.UpdatePetDetails)
 
 
+////////////Pet Product Section ///////////////
+router.post('/petProduct', ProductController.PetProduct)
+
+
+
+
+
  ///////////////Frontend SECTION/////////////////////
  router.get('/dogfetchProduct',ProductController.dogFetchProductControler)
-
+router.get('/petproductsall' , ProductController.petproductfetching)
 
 
 

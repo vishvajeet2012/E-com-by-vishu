@@ -20,57 +20,69 @@ function Product() {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen p-2">
-      {/* Flex Layout */}
-      <div className="flex flex-wrap gap-3 p-5 px-5 justify-start">
-        {dogProducts.map((product, index) => (
-          <div key={index}
-            className="max-w-xs  p-4 bg-white rounded-md shadow hover:shadow-lg transition duration-300">
-           <div style={{objectFit:"contain",aspectRatio:"3/2"}} className="w-full h-72 ">
-            <img
-              src={product.images[0] || "https://via.placeholder.com/150"}
-              alt={product.dogName || "Dog Image"}
-              className="w-full h-full  rounded-md mb-3"
-            />
-            </div>
-            <h2 className="text-lg font-semibold text-gray-800 truncate">
-              {product.dogName}
-            </h2>
-            <p className="text-sm text-gray-500 truncate">
-              Breed: {product.dogBreed || "Unknown"}
-            </p>
-            <p className="text-sm text-gray-500 truncate">
-              Life Expectancy: {product.lifeExpectancy || "N/A"} years
-            </p>
-            <p className="text-sm text-gray-500 truncate">
-              Size: {product.dogSize || "Unknown"}
-            </p>
-            <p className="text-sm text-gray-500 truncate">
-              Pet Type: {product.petType || "Unknown"}
-            </p>
-            <p className="text-sm text-gray-500 truncate">
-              Pet Age: {product.age !== undefined ? `${product.age} years` : "Unknown"}
-            </p>
-            <p className="text-sm text-gray-600 mb-3 truncate">
-              {product.description || "No description available."}
-            </p>
-            <div className="flex items-center justify-between">
-              <p className="text-base font-bold text-green-600">
-                {product.price
-                  ? new Intl.NumberFormat("en-IN", {
-                      style: "currency",
-                      currency: "INR",
-                    }).format(product.price)
-                  : "Price on request"}
+    <div className="bg-white min-h-screen py-6">
+      <div className="container mx-auto">
+        <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+          Explore Our Dogs
+        </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {dogProducts.map((product, index) => (
+            <div
+              key={index}
+              className="bg-white shadow rounded-lg p-4 hover:shadow-xl transition duration-300"
+            >
+              <div className="w-full h-48 overflow-hidden rounded-lg mb-4">
+                <img
+                  src={product.images[0] || "https://via.placeholder.com/300"}
+                  alt={product.dogName || "Dog Image"}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h2 className="text-lg font-bold text-gray-900 mb-2 truncate">
+                {product.dogName}
+              </h2>
+              <div className="text-sm text-gray-600 mb-2">
+                <p>
+                  <strong>Breed:</strong> {product.dogBreed || "Unknown"}
+                </p>
+                <p>
+                  <strong>Life Expectancy:</strong>{" "}
+                  {product.lifeExpectancy || "N/A"} years
+                </p>
+                <p>
+                  <strong>Size:</strong> {product.dogSize || "Unknown"}
+                </p>
+                <p>
+                  <strong>Pet Type:</strong> {product.petType || "Unknown"}
+                </p>
+                <p>
+                  <strong>Age:</strong>{" "}
+                  {product.age !== undefined
+                    ? `${product.age} years`
+                    : "Unknown"}
+                </p>
+              </div>
+              <p className="text-gray-700 text-sm mb-4 line-clamp-2">
+                {product.description || "No description available."}
               </p>
-            <Link to={`/Pethub/${product._id}`}>
-  <button className="text-xs py-1 px-3 bg-green-500 text-white rounded hover:bg-green-600 transition">
-    Adopt
-  </button>
-</Link>
+              <div className="flex justify-between items-center">
+                <p className="text-lg font-semibold text-green-600">
+                  {product.price
+                    ? new Intl.NumberFormat("en-IN", {
+                        style: "currency",
+                        currency: "INR",
+                      }).format(product.price)
+                    : "Price on request"}
+                </p>
+                <Link to={`/Pethub/${product._id}`}>
+                  <button className="bg-green-500 text-white py-1 px-4 rounded-lg hover:bg-green-600 transition">
+                    Adopt
+                  </button>
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1,13 +1,6 @@
 require('dotenv').config();
 const DogCollection =require('../model/dogModel')
-
-
-const cloudinary = require('cloudinary').v2;  // Import Cloudinary
-cloudinary.config({ 
-  cloud_name: 'dishdojeh', 
-  api_key: process.env.cloud_api_key, 
-  api_secret: 'jjdqa4FjQ2TaTxSaQzSEiUPzhHA' 
-});
+const PetProductCollection = require('../model/petProductModel')
 
 
 // Controller to handle dog product creation
@@ -61,8 +54,7 @@ exports.dogProductController = async (req, res) => {
     });
   } catch (error) {
     console.error("Error adding pet product:", error); // Log for debugging purposes
-
-    return res.status(500).json({message: "Server error, please try again",
+ return res.status(500).json({message: "Server error, please try again",
       error: error.message || "Something went wrong on the server",
     });
   }
@@ -70,7 +62,12 @@ exports.dogProductController = async (req, res) => {
 
 exports.dogFetchProductControler =async (req,res)=>{
   const record=await DogCollection.find()
-  res.json({data:record})
+  try{
+    res.json({data:record})
+
+  }catch(error){
+      return res.status(500).json({message:"Server error Please Try again", error:error.message || "Something Went Wrong On the server"})
+  }
 
 }
 
@@ -92,13 +89,12 @@ console.log(id)
 ///singleProduct Show Case
 exports.SingleProductGet= async (req,res) =>{
   const id = req.params.id;
-  console.log(id)
       try{
         const result = await DogCollection.findById(id)
         if(!result){
-          return res.status(404).Json({message:"Server Error "})
-        }
-         res.json({data:result})
+          return res.status(404).json({message:"Server Error "})
+        }   res.json({data:result})
+      
       }catch(error){
         res.status(500).json({message:"Error Server Crash"})
       }
@@ -139,3 +135,51 @@ exports.UpdatePetDetails= async(req,res)=>{
 
   }
 }
+/////////////////pet Product section ////////////////
+exports.PetProduct = async(req,res) =>{
+console.log(req.body)
+        try{
+  const  {
+    category ,
+    petCategory,
+    productName ,
+     productDescription, 
+     productSize,
+     productPrice,
+     productType,
+     netQuantity,
+     countryOfOrigin,
+     brand,
+     marketingBy,
+     images} =req.body  
+    
+     const record = new PetProductCollection({
+      category ,
+      petCategory,
+      productName ,
+       productDescription, 
+       productSize,
+       productPrice,
+       productType,
+       netQuantity,
+       countryOfOrigin,
+       brand,
+       marketingBy,
+       images
+     })
+await record.save()
+  return res.status(200).json({message:"saved successfully"})
+        }catch(error){
+              return res.status(500).json({message:"server Crash or internal error"})
+        }
+}
+
+exports.petproductfetching = async (req, res) => {
+  try {x
+    const records = await PetProductCollection.find(); // Fetch all records
+    res.status(200).json({ data: records }); // Send the records as a response
+  } catch (error) {
+    console.error('Error fetching pet products:', error);
+    res.status(500).json({ message: 'Internal server error' }); // Handle errors
+  }
+};

@@ -3,7 +3,7 @@ const regCollection = require('../model/userModel');
 const jwt = require("jsonwebtoken");
 
 exports.RegestrationUserData = async (req, res) => {
- 
+
   try {
    
     const { fullName, email, password } = req.body;
@@ -18,7 +18,7 @@ exports.RegestrationUserData = async (req, res) => {
     }
 
     // Save data in the database
-    const record = new regCollection({ fullName, email, password });
+    const record = new regCollection({ fullName, email, password});
 
     await record.save();
 
@@ -35,11 +35,6 @@ exports.RegestrationUserData = async (req, res) => {
   }
 };
  
-//// userLogin controller
-// exports.loginDataControler= async(req,res)=>{
-//   const {userId, userPass}=req.body
-//   /// await regCollection.findOne({email:userId})
-// ///await regCollection.findOne({password:userPass})
 
 
 
@@ -52,8 +47,7 @@ exports.loginDataControler = async (req, res) => {
     if(!userCheck){
 
       return res.status(400).json({message:"Email not found"})
-    }
-        // admin password check 
+    } // admin password check 
         if(userCheck.email==="vishu@admin.com"){
               if(passCheck.password === "123"){
                       console.log("this is admin 😘")
@@ -67,12 +61,57 @@ exports.loginDataControler = async (req, res) => {
         return res.status(400).json({message:"Incorrect password"})
       }
 res.json({ LoginUser: "Consumer" , data:userCheck,message:"Successfully logged in"})
-
-
-  }catch(error){
+ }catch(error){
         res.status(500).json({message:"Login failed. Please try again later"})
   }
 
+}
+
+exports.userInfroGetData =  async(req,res)=>{
+   const id = req.params.id
+        try{
+
+              const result  = await regCollection.findById(id)
+              if(!result) {
+              return res.status(400).json({message: "data not found /"})
+              }
+              res.json({data:result })
+        }catch(error){
+          res.status(500).json({message:"internal error "})
+        }
+
+}
 
 
+
+exports.userPasswordChange = async (req, res) => {
+  const { id } = req.params; 
+  const { password } = req.body; 
+  try{
+const result = await regCollection.findByIdAndUpdate(id,{
+      password:password
+})
+res.json({message:"password Change"})
+}catch(error){
+    res.status(500).json({message:"internal server error"})
+}
+}
+exports.userAddress = async (req, res) => {
+  const { id } = req.params;
+
+  const { address } = req.body;
+  try {
+      const user = await regCollection.findByIdAndUpdate(id ,{
+        address:address,
+      });
+      res.json({message:"address update"})
+
+  }catch(error){
+     res.status(500).json({message:"internal serverl error"})   
+  }
+
+}
+
+exports.userjiController =async(req,res)=>{
+     ///////////>>>>>>>>>>>>>>>
 }

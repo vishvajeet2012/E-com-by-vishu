@@ -16,6 +16,14 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  address: {
+    type: String,
+    default: ''
+  },
+  profilePicture: {
+    type: String,
+    default: '', 
+  }
 }, { timestamps: true }) 
 
 // Create the model based on the schema

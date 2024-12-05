@@ -1,4 +1,4 @@
-import AdminProduct from "./Product/AdminProduct";
+import AdminProduct from "./PetProduct/AdminProduct";
 import DogSection from "./Product/DogSection";
 
 function Admin() {

@@ -33,3 +33,8 @@ res.json({ LoginUser: "Consumer" , data:userCheck,message:"Successfully logged i
 
 
 } 
+
+function handelLogin(data){
+   setUser(data.LoginUser)
+   
+}

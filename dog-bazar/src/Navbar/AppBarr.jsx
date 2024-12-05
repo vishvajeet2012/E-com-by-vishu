@@ -38,7 +38,7 @@ const AppBarr = () => {
           } md:bg-transparent md:flex-row p-4 md:p-0 shadow-lg md:shadow-none mx-auto`}
         >
           <li className="hover:text-gray-300 cursor-pointer">Home</li>
-       <Link to="/dogadopt">   <li className="hover:text-gray-300 cursor-pointer">Adopt</li> </Link>
+       <Link to="/userInfo">   <li className="hover:text-gray-300 cursor-pointer">Adopt</li> </Link>
           <li className="hover:text-gray-300 cursor-pointer">Services</li>
           <li className="hover:text-gray-300 cursor-pointer">Contact</li>
         </ul>
