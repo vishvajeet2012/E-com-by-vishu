@@ -5,7 +5,7 @@ function DogSection(){
     return (
         <>
  <div className="flex mt-10 justify-between gap-5">
-      <div className="py-6 px-6 rounded-xl w-full bg-orange-500">
+      <div className="py-6 px-6 rounded-xl w-full bg-blue-500">
     <h2 className="text-2xl font-semibold"></h2> 
         <h3 className="text-xl font-medium">Dogs</h3>
 

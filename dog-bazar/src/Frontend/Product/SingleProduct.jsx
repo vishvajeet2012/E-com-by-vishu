@@ -43,9 +43,9 @@ function SingleProduct() {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen py-6">
+    <div className="bg-gray-100  min-h-screen py-6">
       <div className="container mx-auto">
-        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+        <div className="bg-white mt-16 shadow-md rounded-lg overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Image Section */}
             <div className="relative">

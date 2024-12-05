@@ -175,7 +175,7 @@ await record.save()
 }
 
 exports.petproductfetching = async (req, res) => {
-  try {x
+  try {
     const records = await PetProductCollection.find(); // Fetch all records
     res.status(200).json({ data: records }); // Send the records as a response
   } catch (error) {
