@@ -3,9 +3,9 @@ import dogPic from "./media/petRED.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-function Login({handelLogin}) {
-  const [formData, setFormData] = useState(""); // for password
-  const [email, setEmail] = useState(""); 
+function Login({ handelLogin }) {
+  const [formData, setFormData] = useState(""); // For password
+  const [email, setEmail] = useState("");
   const [fadeClass, setFadeClass] = useState("fade-in");
   const navigate = useNavigate();
 
@@ -17,39 +17,41 @@ function Login({handelLogin}) {
     setEmail(e.target.value);
   };
 
-  // Handle password input change
   const handleInputChange = (e) => {
     setFormData(e.target.value);
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     let userId = email;
     let userPass = formData;
     let loginData = { userId, userPass };
 
     try {
       const response = await fetch("api/login", {
-        method: 'POST',
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),
       });
 
       if (response.ok) {
-        const data = await response.json();   
-      if (data.data == "admin"){   
-        // adminDashborad section
-        handelLogin(data)
-        toast.success(data.message); 
-        navigate("/admin")
-        return;
-      }
-        console.log(data)  
-        // consumer section here
-        handelLogin(data)
-       toast.success(data.message); 
-      navigate("/Product");
+        const data = await response.json();
 
+        if (data.data === "admin") {
+          // Admin dashboard section
+          handelLogin(data);
+          toast.success(data.message);
+          navigate("/admin");
+          return;
+        }
+
+        console.warn(data.data._id); // Save this user ID in local storage
+        localStorage.setItem("userId", data.data._id);
+
+        // Consumer section
+        handelLogin(data);
+        toast.success(data.message);
+        navigate("/Product");
       } else {
         const error = await response.json();
         toast.error(error.message || "Login failed");
@@ -94,7 +96,7 @@ function Login({handelLogin}) {
               type="email"
               id="email"
               value={email}
-              onChange={(e) => handleInputValue(e)}
+              onChange={handleInputValue}
               placeholder="Enter your email"
               className="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 input-transition"
             />
