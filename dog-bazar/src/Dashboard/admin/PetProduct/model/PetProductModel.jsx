@@ -4,6 +4,7 @@ import { useState } from "react";
 import Listproduct from "../../Product/Listproduct";
 import PopPetProduct from "./PopPetProduct";
 import PetProduct from "../../Adpot/petProduct/PetProduct";
+import ListPetProduct from "./ListPetProduct";
 
 function PetProductModel() {
   const [showModel, setShowModel] = useState(false);
@@ -30,7 +31,7 @@ function PetProductModel() {
     </div> 
       
     {showModel && <PopPetProduct   closeModal={closeModal}/>}
-    <Listproduct/>
+    <ListPetProduct/>
     
     </>
   );

@@ -5,10 +5,12 @@ const petProductSchema = new Schema({
   category: {
     type: String,
     required: true,
+    trim: true
   },
   petCategory: {
     type: String,
     required: true,
+    trim: true
   },
   productName: {
     type: String,
