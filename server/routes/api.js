@@ -21,7 +21,7 @@ router.post('/regData', userController.RegestrationUserData);
  router.get('/userInfo/:id', userController.userInfroGetData)
  router.put('/userPasswordChange/:id', userController.userPasswordChange)
  router.put('/userkapata/:id', userController.userAddress)
-router.put('/userji/:id',userController.userjiController)
+router.put('/userji/:id' ,userController.userprofileupdate)
 
 
  

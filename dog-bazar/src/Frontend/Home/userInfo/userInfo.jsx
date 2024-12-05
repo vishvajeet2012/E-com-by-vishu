@@ -14,7 +14,7 @@ function UserInfo(props) {
   const [profilePicturePreview, setProfilePicturePreview] = useState(null);
   const [loading, setLoading] = useState(false); // Loading state for form submission
 
-  const userId = prop.props.userInfo._id; // Extract _id from prop
+  const userId = prop.props.userInfo._id;
 
   // Fetch user data when component mounts
   useEffect(() => {
@@ -83,7 +83,7 @@ function UserInfo(props) {
     const formData = new FormData();
     formData.append("fullName", user.fullName);
     formData.append("email", user.email);
-   formData.append("profilePicture", user.profilePicture);
+    formData.append("profilePicture", user.profilePicture);
 
     try {
       const response = await fetch(`/api/userji/${userId}`, {
@@ -105,7 +105,7 @@ function UserInfo(props) {
   // Handle form submission for address update
   const handleSubmitAddress = async (e) => {
     e.preventDefault();
-    setLoading(true); 
+    setLoading(true);
 
     const formData = new FormData();
     formData.append("address", user.address);
@@ -123,14 +123,14 @@ function UserInfo(props) {
     } catch (error) {
       console.error("Error updating user address:", error);
     } finally {
-      setLoading(false); // Hide loading spinner
+      setLoading(false);
     }
   };
 
   // Handle form submission for password update
   const handleSubmitPassword = async (e) => {
     e.preventDefault();
-    setLoading(true); // Show loading spinner
+    setLoading(true);
 
     const formData = new FormData();
     if (password) formData.append("password", password);
@@ -149,58 +149,63 @@ function UserInfo(props) {
     } catch (error) {
       console.error("Error updating user password:", error);
     } finally {
-      setLoading(false); // Hide loading spinner
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
-      <h2 className="text-center text-2xl font-semibold mb-6">Update User</h2>
+    <div className="w-full mx-auto    p-6 bg-white rounded-lg shadow-lg mt-12">
+      <h2 className="text-center text-3xl font-semibold text-gray-800 mb-8">Update User Information</h2>
 
       {/* First Part: User Name and Profile Picture */}
-      <div>
-        <h3 className="text-lg font-semibold">Update Name and Profile Picture</h3>
+      <div className="space-y-6">
+       
         <form onSubmit={handleSubmitNameAndEmail} className="space-y-4">
           {/* Profile Picture Upload */}
-          <div className="text-center mb-6">
+          <div className="flex justify-start  mb-6">
             <img
               src={profilePicturePreview || user.profilePicture || "/default-avatar.png"}
               alt="Profile"
-              className="mx-auto w-24 h-24 rounded-full object-cover"
+              className="w-32 h-32 border-orange-600 border
+              border-4 rounded-full object-cover"
             />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePictureChange}
-              className="mt-4"
-            />
+            <div className="ml-4">
+              <label htmlFor="profile-picture" className="block text-sm font-medium text-gray-600">Change Profile Picture</label>
+              <input
+                type="file"
+                id="profile-picture"
+                accept="image/*"
+                onChange={handleProfilePictureChange}
+                className="mt-2"
+              />
+            </div>
           </div>
 
           {/* Name and Email */}
-          <div>
-            <label className="block text-gray-700 font-medium">Name</label>
+          <div className="flex flex-col">
+            <label className="text-gray-700">Name</label>
             <input
               type="text"
               name="fullName"
               value={user.fullName || ""}
               onChange={handleInputChange}
-              className="w-full border-gray-300 rounded-lg p-2 shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500"
+              className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div>
-            <label className="block text-gray-700 font-medium">Email</label>
+          <div className="flex flex-col">
+            <label className="text-gray-700">Email</label>
             <input
               type="email"
               name="email"
               value={user.email || ""}
               onChange={handleInputChange}
-              className="w-full border-gray-300 rounded-lg p-2 shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500"
+              className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300"
+            className="w-full bg-blue-600 text-white py-2 mt-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
             disabled={loading}
           >
             {loading ? "Saving..." : "Save Name & Picture"}
@@ -209,22 +214,22 @@ function UserInfo(props) {
       </div>
 
       {/* Second Part: Address */}
-      <div>
-        <h3 className="text-lg font-semibold">Update Address</h3>
+      <div className="space-y-6 mt-10">
+        <h3 className="text-2xl font-semibold text-gray-700">Update Address</h3>
         <form onSubmit={handleSubmitAddress} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 font-medium">Address</label>
+          <div className="flex flex-col">
+            <label className="text-gray-700">Address</label>
             <textarea
               name="address"
               value={user.address || ""}
               onChange={handleInputChange}
-              className="w-full border-gray-300 rounded-lg p-2 shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500"
+              className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
             ></textarea>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300"
+            className="w-full bg-blue-600 text-white py-2 mt-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
             disabled={loading}
           >
             {loading ? "Saving..." : "Save Address"}
@@ -233,23 +238,23 @@ function UserInfo(props) {
       </div>
 
       {/* Third Part: Password */}
-      <div>
-        <h3 className="text-lg font-semibold">Update Password</h3>
+      <div className="space-y-6 mt-10">
+        <h3 className="text-2xl font-semibold text-gray-700">Update Password</h3>
         <form onSubmit={handleSubmitPassword} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 font-medium">New Password</label>
+          <div className="flex flex-col">
+            <label className="text-gray-700">New Password</label>
             <input
               type="password"
               value={password}
               onChange={handlePasswordChange}
               aria-label="New Password"
-              className="w-full border-gray-300 rounded-lg p-2 shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500"
+              className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300"
+            className="w-full bg-blue-600 text-white py-2 mt-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
             disabled={loading}
           >
             {loading ? "Saving..." : "Save Password"}

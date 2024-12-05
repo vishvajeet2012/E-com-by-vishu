@@ -16,6 +16,7 @@ import DogAdopt from './Dashboard/admin/Adpot/DogAdpopt';
 import AddPets from './Dashboard/admin/Adpot/addAdpotpet/Addpets';
 import UserInfo from './Frontend/Home/userInfo/userInfo';
 import PetProductModel from './Dashboard/admin/PetProduct/model/PetProductModel';
+import ContextApi from './Navbar/ContextApi';
 
 function App() {
     const [user, setUser] = useState('');
@@ -24,6 +25,7 @@ const [userInfo , SetUserInfo ] =  useState(null);
   function handelLogin(data){
     setUser(data.LoginUser)
     SetUserInfo(data.data)
+   
    }
 
     return (
@@ -46,6 +48,7 @@ const [userInfo , SetUserInfo ] =  useState(null);
                 <Route path="/add-pet" element={<AddPets />} />
                 <Route path='/userInfo' element={<UserInfo userInfo={userInfo}/>}/>
                 <Route path='/pertProductSection' element={<PetProductModel/>} />
+                <Route path='/3123123' element={<ContextApi userInfo={userInfo}/>} />
             </Routes>
         </>
     );

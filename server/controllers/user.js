@@ -112,6 +112,20 @@ exports.userAddress = async (req, res) => {
 
 }
 
-exports.userjiController =async(req,res)=>{
-     ///////////>>>>>>>>>>>>>>>
+exports.userprofileupdate = async(req, res) =>{
+  const {id}= req.params
+  console.log(id)
+  console.log(req.body)
+  try{
+    const {fullName,email ,profilePicture}=req.body
+    const user = await regCollection.findByIdAndUpdate(id,{
+          fullName:fullName,
+          email:email,
+          profilePicture:profilePicture
+
+    })
+      res.status(200).json( {data:user})
+  }catch(error){
+res.status(500).json({message:"Internal server Error"})
+  }
 }
