@@ -21,8 +21,7 @@ import PetProductModel from './Dashboard/admin/PetProduct/model/PetProductModel'
 function App() {
     const [user, setUser] = useState('');
 const [userInfo , SetUserInfo ] =  useState(null);
-   
-  function handelLogin(data){
+   function handelLogin(data){
     setUser(data.LoginUser)
     SetUserInfo(data.data)
    
