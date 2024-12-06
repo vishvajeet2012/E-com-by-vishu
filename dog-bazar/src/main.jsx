@@ -5,11 +5,14 @@ import { Toaster } from 'react-hot-toast';
 import { BrowserRouter } from 'react-router-dom';
 import {Provider} from "react-redux"
 import store from './store/Store.js';
+import ContextApi, { DataContext } from './Navbar/ContextApi.jsx';
 createRoot(document.getElementById('root')).render(
+<ContextApi>
     <BrowserRouter>
 <Provider store={store}> 
         <Toaster />
         <App />
         </Provider>
     </BrowserRouter>
+    </ContextApi>
 );

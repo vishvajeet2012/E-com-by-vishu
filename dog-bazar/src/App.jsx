@@ -48,7 +48,7 @@ const [userInfo , SetUserInfo ] =  useState(null);
                 <Route path="/add-pet" element={<AddPets />} />
                 <Route path='/userInfo' element={<UserInfo userInfo={userInfo}/>}/>
                 <Route path='/pertProductSection' element={<PetProductModel/>} />
-                <Route path='/3123123' element={<ContextApi userInfo={userInfo}/>} />
+               
             </Routes>
         </>
     );
