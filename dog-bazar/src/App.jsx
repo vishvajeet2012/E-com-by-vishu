@@ -16,7 +16,7 @@ import DogAdopt from './Dashboard/admin/Adpot/DogAdpopt';
 import AddPets from './Dashboard/admin/Adpot/addAdpotpet/Addpets';
 import UserInfo from './Frontend/Home/userInfo/userInfo';
 import PetProductModel from './Dashboard/admin/PetProduct/model/PetProductModel';
-import ContextApi from './Navbar/ContextApi';
+
 
 function App() {
     const [user, setUser] = useState('');
@@ -30,10 +30,7 @@ const [userInfo , SetUserInfo ] =  useState(null);
 
     return (
         <>
-
-        
-        
-            {/* Show the AppBar only if the user is a consumer */}
+    
             {user === 'Consumer' && <AppBarr />}
             <Routes>
                 <Route path="/" element={<Login handelLogin={handelLogin} />} />
