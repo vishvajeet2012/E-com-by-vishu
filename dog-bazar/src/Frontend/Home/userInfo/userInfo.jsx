@@ -3,9 +3,9 @@ import toast from "react-hot-toast";
 import { DataContext } from "../../../Navbar/ContextApi";
 
 function UserInfo(props) {
-  const { userHai }  =useContext(DataContext)
-const idUser =userHai?.data?._id
-  const prop = { props };
+  const { userHai } = useContext(DataContext);
+  const idUser = localStorage.getItem("userId");
+
   const [user, setUser] = useState({
     fullName: "",
     email: "",
@@ -13,11 +13,9 @@ const idUser =userHai?.data?._id
     profilePicture: "",
   });
   const [profilePicture, setProfilePicture] = useState(null);
-  const [password, setPassword] = useState("");
   const [profilePicturePreview, setProfilePicturePreview] = useState(null);
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // Loading state for form submission
-
-  const userId = prop.props.userInfo._id;
 
   // Fetch user data when component mounts
   useEffect(() => {
@@ -54,6 +52,7 @@ const idUser =userHai?.data?._id
   const handleProfilePictureChange = async (e) => {
     const file = e.target.files[0];
     setProfilePicture(file);
+
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setProfilePicturePreview(imageUrl); // Preview image
@@ -61,11 +60,11 @@ const idUser =userHai?.data?._id
       // Upload to Cloudinary
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "dogbazarprofile"); // Your Cloudinary preset
+      formData.append("upload_preset", "dogbazarprofile"); // Replace with your Cloudinary preset
 
       try {
         const response = await fetch(
-          "https://api.cloudinary.com/v1_1/dishdojeh/image/upload", 
+          "https://api.cloudinary.com/v1_1/dishdojeh/image/upload",
           { method: "POST", body: formData }
         );
         const data = await response.json();
@@ -89,7 +88,7 @@ const idUser =userHai?.data?._id
     formData.append("profilePicture", user.profilePicture);
 
     try {
-      const response = await fetch(`/api/userji/${userId}`, {
+      const response = await fetch(`/api/userji/${idUser}`, {
         method: "PUT",
         body: formData,
       });
@@ -97,7 +96,7 @@ const idUser =userHai?.data?._id
       if (!response.ok) {
         throw new Error("Failed to update user name and email");
       }
-      console.log("User name and email updated successfully!");
+      toast.success("User name and email updated successfully!");
     } catch (error) {
       console.error("Error updating user name and email:", error);
     } finally {
@@ -114,7 +113,7 @@ const idUser =userHai?.data?._id
     formData.append("address", user.address);
 
     try {
-      const response = await fetch(`/api/userkapata/${userId}`, {
+      const response = await fetch(`/api/userkapata/${idUser}`, {
         method: "PUT",
         body: formData,
       });
@@ -122,7 +121,7 @@ const idUser =userHai?.data?._id
       if (!response.ok) {
         throw new Error("Failed to update user address");
       }
-      console.log("User address updated successfully!");
+      toast.success("User address updated successfully!");
     } catch (error) {
       console.error("Error updating user address:", error);
     } finally {
@@ -139,7 +138,7 @@ const idUser =userHai?.data?._id
     if (password) formData.append("password", password);
 
     try {
-      const response = await fetch(`/api/userPasswordChange/${userId}`, {
+      const response = await fetch(`/api/userPasswordChange/${idUser}`, {
         method: "PUT",
         body: formData,
       });
@@ -147,7 +146,6 @@ const idUser =userHai?.data?._id
       if (!response.ok) {
         throw new Error("Failed to change password");
       }
-
       toast.success("Password changed successfully!");
     } catch (error) {
       console.error("Error updating user password:", error);
@@ -157,112 +155,98 @@ const idUser =userHai?.data?._id
   };
 
   return (
-    <div className="w-full mx-auto    p-6 bg-white rounded-lg shadow-lg mt-12">
+    <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-lg mt-12">
       <h2 className="text-center text-3xl font-semibold text-gray-800 mb-8">Update User Information</h2>
 
-      {/* First Part: User Name and Profile Picture */}
-      <div className="space-y-6">
-       
-        <form onSubmit={handleSubmitNameAndEmail} className="space-y-4">
-          {/* Profile Picture Upload */}
-          <div className="flex justify-start  mb-6">
-            <img
-              src={profilePicturePreview || user.profilePicture || "/default-avatar.png"}
-              alt="Profile"
-              className="w-32 h-32 border-orange-600 border
-              border-4 rounded-full object-cover" />
-            <div className="ml-4">
-              <label htmlFor="profile-picture" className="block text-sm font-medium text-gray-600">Change Profile Picture</label>
-              <input
-                type="file"
-                id="profile-picture"
-                accept="image/*"
-                onChange={handleProfilePictureChange}
-                className="mt-2"
-              />
-            </div>
-          </div>
-
-          {/* Name and Email */}
-          <div className="flex flex-col">
-            <label className="text-gray-700">Name</label>
+      {/* User Info Section */}
+      <form onSubmit={handleSubmitNameAndEmail} className="space-y-4">
+        {/* Profile Picture */}
+        <div className="flex justify-start mb-6">
+          <img
+            src={profilePicturePreview || user.profilePicture || "/default-avatar.png"}
+            alt="Profile"
+            className="w-32 h-32 border-orange-600 border-4 rounded-full object-cover"
+          />
+          <div className="ml-4">
+            <label htmlFor="profile-picture" className="block text-sm font-medium text-gray-600">
+              Change Profile Picture
+            </label>
             <input
-              type="text"
-              name="fullName"
-              value={user.fullName || ""}
-              onChange={handleInputChange}
-              className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+              type="file"
+              id="profile-picture"
+              accept="image/*"
+              onChange={handleProfilePictureChange}
+              className="mt-2"
             />
           </div>
-          <div className="flex flex-col">
-            <label className="text-gray-700">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={user.email || ""}
-              onChange={handleInputChange}
-              className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+        </div>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 mt-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
-            disabled={loading}
-          >
-            {loading ? "Saving..." : "Save Name & Picture"}
-          </button>
-        </form>
-      </div>
+        {/* Name and Email */}
+        <div className="flex flex-col">
+          <label className="text-gray-700">Name</label>
+          <input
+            type="text"
+            name="fullName"
+            value={user.fullName || ""}
+            onChange={handleInputChange}
+            className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-gray-700">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={user.email || ""}
+            onChange={handleInputChange}
+            className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
 
-      {/* Second Part: Address */}
-      <div className="space-y-6 mt-10">
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 mt-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
+          disabled={loading}
+        >
+          {loading ? "Saving..." : "Save Name & Picture"}
+        </button>
+      </form>
+
+      {/* Address Section */}
+      <form onSubmit={handleSubmitAddress} className="space-y-4 mt-10">
         <h3 className="text-2xl font-semibold text-gray-700">Update Address</h3>
-        <form onSubmit={handleSubmitAddress} className="space-y-4">
-          <div className="flex flex-col">
-            <label className="text-gray-700">Address</label>
-            <textarea
-              name="address"
-              value={user.address || ""}
-              onChange={handleInputChange}
-              className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
-            ></textarea>
-          </div>
+        <textarea
+          name="address"
+          value={user.address || ""}
+          onChange={handleInputChange}
+          className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+        ></textarea>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 mt-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
+          disabled={loading}
+        >
+          {loading ? "Saving..." : "Save Address"}
+        </button>
+      </form>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 mt-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
-            disabled={loading}
-          >
-            {loading ? "Saving..." : "Save Address"}
-          </button>
-        </form>
-      </div>
-
-      {/* Third Part: Password */}
-      <div className="space-y-6 mt-10">
+      {/* Password Section */}
+      <form onSubmit={handleSubmitPassword} className="space-y-4 mt-10">
         <h3 className="text-2xl font-semibold text-gray-700">Update Password</h3>
-        <form onSubmit={handleSubmitPassword} className="space-y-4">
-          <div className="flex flex-col">
-            <label className="text-gray-700">New Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-              aria-label="New Password"
-              className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 mt-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
-            disabled={loading}
-          >
-            {loading ? "Saving..." : "Save Password"}
-          </button>
-        </form>
-      </div>
+        <input
+          type="password"
+          value={password}
+          onChange={handlePasswordChange}
+          className="w-full mt-2 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 mt-4 rounded-lg hover:bg-blue-700 focus:ring focus:ring-blue-300"
+          disabled={loading}
+        >
+          {loading ? "Saving..." : "Save Password"}
+        </button>
+      </form>
     </div>
   );
 }

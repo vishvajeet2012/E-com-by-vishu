@@ -25,7 +25,6 @@ const AppBarr = () => {
         console.error("Error fetching user data:", error);
       }
     };
-
     if (idUser) {
       fetchUserData();
     }

@@ -41,6 +41,8 @@ exports.RegestrationUserData = async (req, res) => {
 
 exports.loginDataControler = async (req, res) => {
   try{
+   
+  
     const {userId, userPass}=req.body
     let userCheck =await regCollection.findOne({email:userId})
     let passCheck = await regCollection.findOne({password:userPass})  /// passcheck use for only admin password checking 
