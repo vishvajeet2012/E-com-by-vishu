@@ -1,11 +1,37 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect, useContext } from "react"; 
 import Logo from "../Frontend/media/home/logo.png";
 import { Link } from "react-router-dom";
+import { DataContext } from "./ContextApi";
 
 const AppBarr = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+         const {userHai}  = useContext(DataContext)  
+         const idUser =userHai?.data?._id
+  const [profileDATA , setAppData] =useState(null)
 
+
+  useEffect(()=>{
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`/api/userInfo/${idUser}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const data = await response.json();
+        setAppData(data.data.profilePicture); // Set the fetched data to state
+        
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    if (idUser) {
+      fetchUserData();
+    }
+
+  },)
+  
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -51,7 +77,7 @@ const AppBarr = () => {
           {/* Profile Picture */}
           <Link to="/userInfo">
             <img
-              src="https://via.placeholder.com/40"  // Replace with the actual user profile picture URL
+              src={profileDATA}  // Replace with the actual user profile picture URL
               alt="Profile"
               className="rounded-full w-10 h-10 cursor-pointer"
             />
