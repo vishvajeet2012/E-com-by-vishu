@@ -6,12 +6,11 @@ import { DataContext } from "./ContextApi";
 const AppBarr = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-         const {userHai}  = useContext(DataContext)  
-         const idUser =userHai?.data?._id
-  const [profileDATA , setAppData] =useState(null)
+  const { userHai } = useContext(DataContext);  
+  const idUser = userHai?.data?._id;
+  const [profileDATA, setAppData] = useState(null);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(`/api/userInfo/${idUser}`);
@@ -20,7 +19,6 @@ const AppBarr = () => {
         }
         const data = await response.json();
         setAppData(data.data.profilePicture); // Set the fetched data to state
-        
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -28,9 +26,8 @@ const AppBarr = () => {
     if (idUser) {
       fetchUserData();
     }
+  }, [idUser]);
 
-  },)
-  
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -42,6 +39,11 @@ const AppBarr = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const clearLocalStorage = () => {
+    localStorage.clear();  // Clear all data in local storage
+    window.location.href = "/";  // Redirect to the root path
+  };
 
   return (
     <nav
@@ -82,6 +84,14 @@ const AppBarr = () => {
             />
           </Link>
         </div>
+
+        {/* Clear Local Storage Button */}
+        <button 
+          onClick={clearLocalStorage}
+          className="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-600 transition-all duration-300"
+        >
+          Clear and Logout
+        </button>
       </div>
     </nav>
   );
