@@ -39,7 +39,7 @@ const AppBarr = () => {
           } md:bg-transparent md:flex-row p-4 md:p-0 shadow-lg md:shadow-none mx-auto`}
         >
           <li className="hover:text-gray-300 cursor-pointer">Home</li>
-          <Link to="/3123123">
+          <Link to="/userInfo">
             <li className="hover:text-gray-300 cursor-pointer">Adopt</li>
           </Link>
           <li className="hover:text-gray-300 cursor-pointer">Services</li>
@@ -49,7 +49,7 @@ const AppBarr = () => {
         {/* Profile Picture Section on the Right Side */}
         <div className="flex items-center space-x-4">
           {/* Profile Picture */}
-          <Link to="/3123123">
+          <Link to="/userInfo">
             <img
               src="https://via.placeholder.com/40"  // Replace with the actual user profile picture URL
               alt="Profile"

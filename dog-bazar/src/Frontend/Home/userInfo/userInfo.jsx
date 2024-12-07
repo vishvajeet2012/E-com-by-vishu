@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import toast from "react-hot-toast";
+import { DataContext } from "../../../Navbar/ContextApi";
 
 function UserInfo(props) {
+  const { userHai }  =useContext(DataContext)
+const idUser =userHai?.data?._id
   const prop = { props };
   const [user, setUser] = useState({
     fullName: "",
@@ -20,7 +23,7 @@ function UserInfo(props) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`/api/userInfo/${userId}`);
+        const response = await fetch(`/api/userInfo/${idUser}`);
         if (!response.ok) {
           throw new Error("Failed to fetch user data");
         }
@@ -31,10 +34,10 @@ function UserInfo(props) {
       }
     };
 
-    if (userId) {
+    if (idUser) {
       fetchUserData();
     }
-  }, [userId]);
+  }, [idUser]);
 
   // Handle input changes for user name and address
   const handleInputChange = (e) => {
@@ -167,8 +170,7 @@ function UserInfo(props) {
               src={profilePicturePreview || user.profilePicture || "/default-avatar.png"}
               alt="Profile"
               className="w-32 h-32 border-orange-600 border
-              border-4 rounded-full object-cover"
-            />
+              border-4 rounded-full object-cover" />
             <div className="ml-4">
               <label htmlFor="profile-picture" className="block text-sm font-medium text-gray-600">Change Profile Picture</label>
               <input
