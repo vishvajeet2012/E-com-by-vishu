@@ -16,6 +16,7 @@ import DogAdopt from './Dashboard/admin/Adpot/DogAdpopt';
 import AddPets from './Dashboard/admin/Adpot/addAdpotpet/Addpets';
 import UserInfo from './Frontend/Home/userInfo/userInfo';
 import PetProductModel from './Dashboard/admin/PetProduct/model/PetProductModel';
+import SinglePetProductSection from './Frontend/PetProduct/singleProduct';
 
 
 function App() {
@@ -44,7 +45,7 @@ const [userInfo , SetUserInfo ] =  useState(null);
                 <Route path="/add-pet" element={<AddPets />} />
                 <Route path='/userInfo' element={<UserInfo userInfo={userInfo}/>}/>
                 <Route path='/pertProductSection' element={<PetProductModel/>} />
-               
+               <Route path='/singlePetHubs/:id' element={<SinglePetProductSection/>}/>
             </Routes>
         </>
     );

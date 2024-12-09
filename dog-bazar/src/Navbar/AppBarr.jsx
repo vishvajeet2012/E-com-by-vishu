@@ -7,7 +7,8 @@ const AppBarr = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { userHai } = useContext(DataContext);  
-  const idUser = userHai?.data?._id;
+  // const idUser = userHai?.data?._id;
+  const idUser = localStorage.getItem("userId");
   const [profileDATA, setAppData] = useState(null);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ const AppBarr = () => {
           throw new Error("Failed to fetch user data");
         }
         const data = await response.json();
-        setAppData(data.data.profilePicture); // Set the fetched data to state
+        setAppData(data.data.profilePicture); 
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -26,7 +27,7 @@ const AppBarr = () => {
     if (idUser) {
       fetchUserData();
     }
-  }, [idUser]);
+  }, );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,7 +73,7 @@ const AppBarr = () => {
           <li className="hover:text-gray-300 cursor-pointer">Services</li>
           <li className="hover:text-gray-300 cursor-pointer">Contact</li>
         </ul>
-
+              <div className=" flex  gap-3	">
         {/* Profile Picture Section on the Right Side */}
         <div className="flex items-center space-x-4">
           {/* Profile Picture */}
@@ -88,10 +89,11 @@ const AppBarr = () => {
         {/* Clear Local Storage Button */}
         <button 
           onClick={clearLocalStorage}
-          className="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-600 transition-all duration-300"
+          className="bg-red-500 text-white py-1 px-1 rounded-lg shadow-md hover:bg-red-600 transition-all duration-300"
         >
-          Clear and Logout
+          logout
         </button>
+        </div>
       </div>
     </nav>
   );

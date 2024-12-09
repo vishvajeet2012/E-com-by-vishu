@@ -39,7 +39,7 @@ router.put('/dogupdateProduct/:id',ProductController.UpdatePetDetails)
 
 ////////////Pet Product Section ///////////////
 router.post('/petProduct', ProductController.PetProduct)
-
+router.get('/singlePetHub/:id',ProductController.SinglePetProductSection)
 
 
 

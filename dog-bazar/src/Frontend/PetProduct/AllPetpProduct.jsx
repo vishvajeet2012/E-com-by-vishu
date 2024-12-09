@@ -11,7 +11,7 @@ function AllPetProduct() {
         const res = await fetch("/api/petproductsall");
         const result = await res.json();
         setPetProducts(result.data);
-        console.log(result.data); 
+       
       } catch (error) {
         console.error("Error fetching pet products:", error);
         toast.error("Server Crash! Please try again later.");
@@ -64,10 +64,9 @@ function AllPetProduct() {
                       : "Price on request"
                     }
                   </p>
-                  <Link to={`/Pethub/${product._id}`}>
+                  <Link to={`/singlePetHubs/${product._id}`}>
                     <button 
-                      className="bg-green-500 text-white py-1 px-4 rounded-lg hover:bg-green-600 transition"
-                    >
+                      className="bg-green-500 text-white py-1 px-4 rounded-lg hover:bg-green-600 transition">
                       View Product
                     </button>
                   </Link>
