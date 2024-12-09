@@ -15,7 +15,7 @@ function SinglePetProductSection() {
         if (!response.ok) throw new Error("Failed to fetch product data");
         const data = await response.json();
         setProduct(data.data);
-        console.log(data.message)
+        console.log(data.data)
         setMainImage(data.data?.images?.[0] || "/placeholder.jpg");
       } catch (err) {
         setError(err.message);
@@ -79,36 +79,33 @@ function SinglePetProductSection() {
             {/* Details Section */}
             <div className="p-6 flex flex-col">
               <h1 className="text-2xl font-bold text-gray-800 mb-2">
-                {product?.dogName || "Product Name"}
+                {product?.productName || "Product Name"}
               </h1>
               <p className="text-gray-500 mb-4">
-                {product?.description || "No description available."}
+                {product?.productDescription || "No description available."}
               </p>
 
               <div className="space-y-2">
                 <p>
-                  <strong>Breed:</strong> {product?.dogBreed || "Unknown"}
+                  <strong>Product Type:</strong> {product?.productType || "Unknown"}
                 </p>
                 <p>
-                  <strong>Life Expectancy:</strong>{" "}
-                  {product?.lifeExpectancy || "N/A"} years
+                  <strong>Brand:</strong>{" "}
+                  {product?.brand || "N/A"} years
                 </p>
                 <p>
-                  <strong>Size:</strong> {product?.dogSize || "Unknown"}
+                  <strong>Size:</strong> {product?.productSize || "Unknown"}
                 </p>
                 <p>
-                  <strong>Pet Type:</strong> {product?.petType || "Unknown"}
+                  <strong>Product For:</strong> {product?.petCategory || "Unknown"}
                 </p>
                 <p>
-                  <strong>Age:</strong>{" "}
-                  {product?.age !== undefined
-                    ? `${product.age} years`
-                    : "Unknown"}
-                </p>
+                  <strong>category:</strong>
+                 { product?.category}</p>
               </div>
 
               <p className="text-xl font-bold text-green-600 mt-4">
-                ₹{product?.price || "N/A"}
+                ₹{product?.productPrice || "N/A"}
               </p>
 
               <div className="flex gap-4 mt-6">

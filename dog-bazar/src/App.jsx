@@ -41,7 +41,7 @@ const [userInfo , SetUserInfo ] =  useState(null);
                 <Route path="/dogsection" element={<DogsectionModel />} />
                 <Route path="/petProduct" element={<PetProduct />} />
                 <Route path="/Pethub/:id" element={<SingleProduct />} />
-                <Route path="/dogadopt" element={<DogAdopt />} />
+                <Route path="/adopt" element={<DogAdopt />} />
                 <Route path="/add-pet" element={<AddPets />} />
                 <Route path='/userInfo' element={<UserInfo userInfo={userInfo}/>}/>
                 <Route path='/pertProductSection' element={<PetProductModel/>} />
