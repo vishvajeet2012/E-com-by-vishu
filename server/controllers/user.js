@@ -1,6 +1,4 @@
 const regCollection = require('../model/userModel');
-const bcrypt = require('bcryptjs');
-
 const jwt = require("jsonwebtoken");
 
 exports.RegestrationUserData = async (req, res) => {
@@ -17,9 +15,8 @@ console.log(req.body)
     if (existingUser) {
       return res.status(400).json({ message: "Email is already registered" });
     }
-          const hash = await bcrypt.hash(password,10)
     // Save data in the database
-    const record = new regCollection({ fullName, email, password :hash} );
+    const record = new regCollection({ fullName, email, password} );
 
     await record.save();
 
@@ -52,10 +49,7 @@ exports.loginDataControler = async (req, res) => {
     if(!user){
       return res.status(400).json({message:"Invalid email or password"})
     }     
-const isMatch = await bcrypt.compare(userPass, user.password)
-if(!isMatch){
-  return res.status(400).json({message:"Invalid email or password"})
-}
+
   const token = user.generateAuthToken()
 return res.status(200).json({message:"Login succes ", token})
 
