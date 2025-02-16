@@ -1,9 +1,10 @@
 const regCollection = require('../model/userModel');
- 
+const bcrypt = require('bcryptjs');
+
 const jwt = require("jsonwebtoken");
 
 exports.RegestrationUserData = async (req, res) => {
-
+console.log(req.body)
   try {
    
     const { fullName, email, password } = req.body;

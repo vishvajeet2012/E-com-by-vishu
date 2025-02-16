@@ -45,7 +45,7 @@ function Login({ handelLogin }) {
           return;
         }
 
-        console.warn(data.data._id); // Save this user ID in local storage
+        console.warn(data); // Save this user ID in local storage
         localStorage.setItem("userId", data.data._id);
 
         // Consumer section
