@@ -16,9 +16,9 @@ exports.RegestrationUserData = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "Email is already registered" });
     }
-
+          const hash = await bcrypt.hash(password,10)
     // Save data in the database
-    const record = new regCollection({ fullName, email, password});
+    const record = new regCollection({ fullName, email, password :hash} );
 
     await record.save();
 
@@ -44,30 +44,27 @@ exports.loginDataControler = async (req, res) => {
    
   
     const {userId, userPass}=req.body
-    let userCheck =await regCollection.findOne({email:userId})
-    let passCheck = await regCollection.findOne({password:userPass})  /// passcheck use for only admin password checking 
-    if(!userCheck){
-
-      return res.status(400).json({message:"Email not found"})
-    } // admin password check 
-        if(userCheck.email==="vishu@admin.com"){
-              if(passCheck.password === "123"){
-                      console.log("this is admin 😘")
-                return res.json({LoginUser:"Admin" , data: "admin", message: "Admin successfully logged in" });
-              }else {
-                //  if admin password is worng
-                return res.status(400).json({  message: "Incorrect admin password" }); }
-          }
-        /// checkn user passwrod 
-      if(userCheck.password !==userPass){
-        return res.status(400).json({message:"Incorrect password"})
-      }
-res.json({ LoginUser: "Consumer" , data:userCheck,message:"Successfully logged in"})
- }catch(error){
-        res.status(500).json({message:"Login failed. Please try again later"})
-  }
-
+   if(!userId || !userPass){
+     return res.status(400).json({message:"All field are required"})
+   }
+    const user = await regCollection.findOne({email:userId} ) 
+    if(!user){
+      return res.status(400).json({message:"Invalid email or password"})
+    }     
+const isMatch = await bcrypt.compare(userPass, user.password)
+if(!isMatch){
+  return res.status(400).json({message:"Invalid email or password"})
 }
+  const token = user.generateAuthToken()
+return res.status(200).json({message:"Login succes ", token})
+
+}catch(error){
+  console.error("Error during login:", error);
+  return res.status(500).json({
+    message: "Server error, please try again later.",
+    error: error.message,
+  })};
+ }
 
 exports.userInfroGetData =  async(req,res)=>{
    const id = req.params.id

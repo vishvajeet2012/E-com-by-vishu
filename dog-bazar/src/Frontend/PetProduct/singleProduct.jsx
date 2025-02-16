@@ -15,7 +15,6 @@ function SinglePetProductSection() {
         if (!response.ok) throw new Error("Failed to fetch product data");
         const data = await response.json();
         setProduct(data.data);
-        console.log(data.data)
         setMainImage(data.data?.images?.[0] || "/placeholder.jpg");
       } catch (err) {
         setError(err.message);
@@ -47,14 +46,18 @@ function SinglePetProductSection() {
     <div className="bg-gray-100 min-h-screen py-6">
       <div className="container mx-auto">
         <div className="bg-white mt-16 shadow-md rounded-lg overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Image Section */}
             <div className="relative">
-              <img
-                src={mainImage}
-                alt={product?.dogName || "Product Image"}
-                className="w-full h-full object-cover"
-              />
+              <div className="w-full h-96 bg-gray-200 flex items-center justify-center overflow-hidden">
+                <img
+                  src={mainImage}
+                  alt={product?.dogName || "Product Image"}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Thumbnails */}
               <div className="absolute bottom-4 left-4 flex gap-2">
                 {product?.images?.map((image, index) => (
                   <button
@@ -77,21 +80,25 @@ function SinglePetProductSection() {
             </div>
 
             {/* Details Section */}
-            <div className="p-6 flex flex-col">
+            <div className="p-6 flex flex-col space-y-4">
               <h1 className="text-2xl font-bold text-gray-800 mb-2">
                 {product?.productName || "Product Name"}
               </h1>
-              <p className="text-gray-500 mb-4">
+
+              {/* Description */}
+              <div
+                className="text-gray-500 mb-4 flex-grow"
+                style={{ maxHeight: "150px", overflow: "hidden" }}
+              >
                 {product?.productDescription || "No description available."}
-              </p>
+              </div>
 
               <div className="space-y-2">
                 <p>
                   <strong>Product Type:</strong> {product?.productType || "Unknown"}
                 </p>
                 <p>
-                  <strong>Brand:</strong>{" "}
-                  {product?.brand || "N/A"} years
+                  <strong>Brand:</strong> {product?.brand || "N/A"}
                 </p>
                 <p>
                   <strong>Size:</strong> {product?.productSize || "Unknown"}
@@ -100,8 +107,8 @@ function SinglePetProductSection() {
                   <strong>Product For:</strong> {product?.petCategory || "Unknown"}
                 </p>
                 <p>
-                  <strong>category:</strong>
-                 { product?.category}</p>
+                  <strong>Category:</strong> {product?.category || "Unknown"}
+                </p>
               </div>
 
               <p className="text-xl font-bold text-green-600 mt-4">

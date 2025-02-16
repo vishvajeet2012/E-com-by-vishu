@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
+const jwt = require("jsonwebtoken");
 
 // Define the schema for user registration
 const userSchema = new Schema({
@@ -24,9 +25,13 @@ const userSchema = new Schema({
     type: String,
     default: '', 
   }
-}, { timestamps: true }) 
+}, { timestamps: true });
 
-// Create the model based on the schema
+// Corrected method name and syntax
+userSchema.methods.generateAuthToken = function() {
+  return jwt.sign({ _id: this._id, email: this.email }, process.env.JWT_SECRET);
+};
+
 const regCollection = model('User', userSchema);
 
 module.exports = regCollection;
